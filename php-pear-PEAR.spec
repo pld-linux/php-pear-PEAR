@@ -13,7 +13,7 @@ License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
 # Source0-md5:	aa4adb116f4e230e7d07270417fc7133
-URL:		http://pear.php.net/
+URL:		http://pear.php.net/package/%{_pearname}/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
 Requires:	php-pear
