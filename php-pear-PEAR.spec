@@ -5,14 +5,17 @@ Summary:	%{_class} - main php pear class
 Summary(pl):	%{_class} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	0.90
-Release:	2
+Release:	3
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
 URL:		http://pear.php.net/
 BuildRequires:	rpm-php-pearprov
 Requires:	php-pear
+# This is temporary empty class
 Provides:	pear(stdClass)
+# Temporary - this is not OK:
+Provides:	pear(parent)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -33,12 +36,25 @@ Pakiet PEAR zawiara:
 Summary:	%{_class} - main php pear class
 Summary(pl):	%{_class} - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
+Requires:	pear(Frontend)
 
 %description Command
 Command class for PEAR.
 
 %description -l pl Command
 Klasa Command dla PEARa.
+
+%package Frontend_CLI
+Summary:	%{_class} - main php pear class
+Summary(pl):	%{_class} - podstawowa klasa dla php pear
+Group:		Development/Languages/PHP
+Provides:	pear(Frontend)
+
+%description Frontend_CLI
+Command Line Frontend for PEAR.
+
+%description -l pl Frontend_CLI
+Interfejs z linii poleceñ dla PEAR-a.
 
 %package OS
 Summary:	%{_class} - main php pear class
@@ -62,7 +78,7 @@ install %{_pearname}-%{version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
 install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
 install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
 install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
-install %{_pearname}-%{version}/%{_class}/Frontend/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
+install %{_pearname}-%{version}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -77,6 +93,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{php_pear_dir}/%{_class}/Frontend
 %{php_pear_dir}/%{_class}/*.php
 %{php_pear_dir}/%{_class}/Command/*.php
+
+%files Frontend_CLI
+%defattr(644,root,root,755)
 %{php_pear_dir}/%{_class}/Frontend/*.php
 
 %files OS
