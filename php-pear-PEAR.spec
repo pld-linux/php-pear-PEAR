@@ -1,18 +1,18 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
-%define		_status		stable
+%define		_status		beta
 %define		_pearname	%{_class}
-#%define		_version	%{version}b5
+%define		_version	%{version}b1
 Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
-Version:	1.2.1
-Release:	1
+Version:	1.3
+Release:	0.b1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	aa4adb116f4e230e7d07270417fc7133
+Source0:	http://pear.php.net/get/%{_pearname}-%{_version}.tgz
+# Source0-md5:	c2ab4efba7fcc9ef9f37518cfdaa1e67
 URL:		http://pear.php.net/package/%{_pearname}/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
@@ -88,10 +88,10 @@ Ta klasa ma w PEAR status: %{_status}.
 %setup -q -c
 
 %build
-cd %{_pearname}-%{version}/scripts
+cd %{_pearname}-%{_version}/scripts
 sed -e "s#@php_bin@#php#" pear.sh > pear.sh.tmp
 mv -f pear.sh.tmp pear.sh
-sed -e "s#@pear_version@#%{version}#" pear.sh > pear.sh.tmp
+sed -e "s#@pear_version@#%{_version}#" pear.sh > pear.sh.tmp
 mv -f pear.sh.tmp pear.sh
 sed -e "s#@php_dir@#%{php_pear_dir}#" pear.sh > pear.sh.tmp
 mv -f pear.sh.tmp pear.sh
@@ -100,14 +100,14 @@ mv -f pear.sh.tmp pear.sh
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{php_pear_dir}/{%{_class}/{Command,Frontend},OS},%{_bindir}}
 
-install %{_pearname}-%{version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
-install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
-install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
-install %{_pearname}-%{version}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
-install %{_pearname}-%{version}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
+install %{_pearname}-%{_version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{_version}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{_version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
+install %{_pearname}-%{_version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
+install %{_pearname}-%{_version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
+install %{_pearname}-%{_version}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
+install %{_pearname}-%{_version}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{_version}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
 
 %clean
 rm -rf $RPM_BUILD_ROOT
