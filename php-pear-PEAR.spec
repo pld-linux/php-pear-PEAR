@@ -6,13 +6,13 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.3.4
+Version:	1.3.5
 Release:	1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	38a21bb2eabd361ebba26bbc330faea6
+# Source0-md5:	8fead7fddb93f9b3cecd740823daafd2
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
@@ -118,8 +118,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%dir %{php_pear_dir}
-%dir %{php_pear_dir}/PEAR
 %{php_pear_dir}/*.php
 
 %files Command
