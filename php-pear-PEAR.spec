@@ -49,7 +49,7 @@ Command class for PEAR.
 
 This class has in PEAR status: %{_status}
 
-%description -l pl Command
+%description Command -l pl
 Klasa Command dla PEARa.
 
 Ta klasa ma w PEAR status: %{_status}
@@ -64,7 +64,7 @@ Command Line Frontend for PEAR.
 
 This class has in PEAR status: %{_status}
 
-%description -l pl Frontend_CLI
+%description Frontend_CLI -l pl
 Interfejs z linii poleceñ dla PEAR-a.
 
 Ta klasa ma w PEAR status: %{_status}
@@ -79,7 +79,7 @@ OS_Guess class for PEAR.
 
 This class has in PEAR status: %{_status}
 
-%description -l pl OS
+%description OS -l pl
 Klasa OS_Guess dla PEARa.
 
 Ta klasa ma w PEAR status: %{_status}
