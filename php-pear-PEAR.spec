@@ -2,17 +2,17 @@
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
-%define		_version	%{version}b2
+%define		_version	%{version}b3
 Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.2
-Release:	0.b2
+Release:	0.b3
 Epoch:		1
-License:	PHP 2.02
+License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{_version}.tgz
-# Source0-md5:	d20cd88aa5ee444a4247a2e8f7f22525
+# Source0-md5:	608a42be8b6de15243bd53c9b1cd1b0f
 URL:		http://pear.php.net/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
