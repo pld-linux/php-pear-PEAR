@@ -58,6 +58,8 @@ Ta klasa ma w PEAR status: %{_status}.
 Summary:	%{_pearname}-Frontend_CLI - main php pear class
 Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
+Requires:	php-pear-Archive_Tar
+Requires:	php-pear-Console_Getopt
 
 %description Frontend_CLI
 Command Line Frontend for PEAR.
