@@ -5,7 +5,7 @@ Summary:	%{_class} - main php pear class
 Summary(pl):	%{_class} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	0.90
-Release:	1
+Release:	2
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
