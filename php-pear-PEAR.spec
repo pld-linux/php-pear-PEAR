@@ -17,10 +17,12 @@ URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
 Requires:	php-pear
+Provides:	pear(StdClass)
+provides:	pear(parent)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(/usr/src/redhat/RPMS/i386/PEAR)'
+%define		_noautoreq	'pear(/usr/src/redhat/RPMS/i386/PEAR) pear(Gtk) pear(Exception)'
 
 %description
 The PEAR package contains:
@@ -60,6 +62,7 @@ Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
 Requires:	php-pear-Archive_Tar
 Requires:	php-pear-Console_Getopt
+Obsoletes:	php-pear-devel
 
 %description Frontend_CLI
 Command Line Frontend for PEAR.
