@@ -29,7 +29,7 @@ The PEAR package contains:
 - the PEAR installer, for creating, distributing and installing
   packages
 
-This class has in PEAR status: %{_status}
+This class has in PEAR status: %{_status}.
 
 %description -l pl
 Pakiet PEAR zawiara:
@@ -37,7 +37,7 @@ Pakiet PEAR zawiara:
 - Mechanizm obs³ugi b³êdów PEAR_Error
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów
 
-Ta klasa ma w PEAR status: %{_status}
+Ta klasa ma w PEAR status: %{_status}.
 
 %package Command
 Summary:	%{_pearname}-Command - main php pear class
@@ -47,12 +47,12 @@ Group:		Development/Languages/PHP
 %description Command
 Command class for PEAR.
 
-This class has in PEAR status: %{_status}
+This class has in PEAR status: %{_status}.
 
 %description Command -l pl
 Klasa Command dla PEARa.
 
-Ta klasa ma w PEAR status: %{_status}
+Ta klasa ma w PEAR status: %{_status}.
 
 %package Frontend_CLI
 Summary:	%{_pearname}-Frontend_CLI - main php pear class
@@ -62,12 +62,12 @@ Group:		Development/Languages/PHP
 %description Frontend_CLI
 Command Line Frontend for PEAR.
 
-This class has in PEAR status: %{_status}
+This class has in PEAR status: %{_status}.
 
 %description Frontend_CLI -l pl
 Interfejs z linii poleceñ dla PEAR-a.
 
-Ta klasa ma w PEAR status: %{_status}
+Ta klasa ma w PEAR status: %{_status}.
 
 %package OS
 Summary:	%{_pearname}-OS - main php pear class
@@ -77,12 +77,12 @@ Group:		Development/Languages/PHP
 %description OS
 OS_Guess class for PEAR.
 
-This class has in PEAR status: %{_status}
+This class has in PEAR status: %{_status}.
 
 %description OS -l pl
 Klasa OS_Guess dla PEARa.
 
-Ta klasa ma w PEAR status: %{_status}
+Ta klasa ma w PEAR status: %{_status}.
 
 %prep
 %setup -q -c
