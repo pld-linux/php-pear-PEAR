@@ -26,6 +26,28 @@ Pakiet PEAR zawiara:
 - Mechanizm obs³ugi b³êdów PEAR_Error
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów
 
+%package Command
+Summary:	PEAR - main php pear class
+Summary(pl):	PEAR - podstawowa klasa dla php pear
+Group:		Development/Languages/PHP
+
+%description Command
+Command class for PEAR.
+
+%description -l pl Command
+Klasa Command dla PEARa.
+
+%package OS
+Summary:	PEAR - main php pear class
+Summary(pl):	PEAR - podstawowa klasa dla php pear
+Group:		Development/Languages/PHP
+
+%description OS
+OS_Guess class for PEAR.
+
+%description -l pl OS
+Klasa OS_Guess dla PEARa.
+
 %prep
 %setup -q -c
 
@@ -46,10 +68,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%dir %{php_pear_dir}/%{_pearname}
-%dir %{php_pear_dir}/OS
 %{php_pear_dir}/*.php
+
+%files Command
+%defattr(644,root,root,755)
+%dir %{php_pear_dir}/%{_pearname}
+%dir %{php_pear_dir}/%{_pearname}/Command
 %{php_pear_dir}/%{_pearname}/*.php
 %{php_pear_dir}/%{_pearname}/Command/*.php
 %{php_pear_dir}/%{_pearname}/Frontend/*.php
+
+%files OS
+%defattr(644,root,root,755)
+%dir %{php_pear_dir}/OS
 %{php_pear_dir}/OS/*.php
