@@ -6,8 +6,8 @@
 Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
-Version:	1.0
-Release:	2
+Version:	1.0.1
+Release:	1
 Epoch:		1
 License:	PHP 2.02
 Group:		Development/Languages/PHP
@@ -94,9 +94,11 @@ Ta klasa ma w PEAR status: %{_status}
 
 %build
 cd %{_pearname}-%{version}/scripts
-sed -e "s/@prefix@/\/usr/" pear.in > pear.in.tmp
+sed -e "s#@php_bin@#php#" pear.in > pear.in.tmp
 mv -f pear.in.tmp pear.in
-sed -e "s/@pear_version@/%{version}/" pear.in > pear.in.tmp
+sed -e "s#@pear_version@#%{version}#" pear.in > pear.in.tmp
+mv -f pear.in.tmp pear.in
+sed -e "s#@php_dir@#%{php_pear_dir}#" pear.in > pear.in.tmp
 mv -f pear.in.tmp pear.in
 
 %install
@@ -104,6 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{php_pear_dir}/{%{_class}/{Command,Frontend},OS},%{_bindir}}
 
 install %{_pearname}-%{version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
 install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
 install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
 install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
@@ -125,6 +128,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/pear
 %{php_pear_dir}/%{_class}/*.php
 %{php_pear_dir}/%{_class}/Command/*.php
+%{php_pear_dir}/*.dtd
 
 %files Frontend_CLI
 %defattr(644,root,root,755)
