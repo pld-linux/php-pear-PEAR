@@ -54,15 +54,13 @@ Klasa OS_Guess dla PEARa.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd %{_pearname}-%{version}
-
 install -d $RPM_BUILD_ROOT%{php_pear_dir}/{%{_class}/{Command,Frontend},OS}
 
-install *.php				$RPM_BUILD_ROOT%{php_pear_dir}
-install OS/*.php			$RPM_BUILD_ROOT%{php_pear_dir}/OS
-install %{_class}/*.php			$RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
-install %{_class}/Command/*.php		$RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
-install %{_class}/Frontend/*.php	$RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
+install %{_pearname}-%{version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
+install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
+install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
+install %{_pearname}-%{version}/%{_class}/Frontend/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
 
 %clean
 rm -rf $RPM_BUILD_ROOT
