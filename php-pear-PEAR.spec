@@ -3,8 +3,8 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 
-Summary:	%{_pearname} - main php pear class
-Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
+Summary:	%{_pearname} - main PHP PEAR class
+Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.3.3
 Release:	2
@@ -40,8 +40,8 @@ Pakiet PEAR zawiara:
 Ta klasa ma w PEAR status: %{_status}.
 
 %package Command
-Summary:	%{_pearname}-Command - main php pear class
-Summary(pl):	%{_pearname}-Command - podstawowa klasa dla php pear
+Summary:	%{_pearname}-Command - main PHP PEAR class
+Summary(pl):	%{_pearname}-Command - podstawowa klasa dla PHP PEAR
 Group:		Development/Languages/PHP
 
 %description Command
@@ -55,8 +55,8 @@ Klasa Command dla PEAR-a.
 Ta klasa ma w PEAR status: %{_status}.
 
 %package Frontend_CLI
-Summary:	%{_pearname}-Frontend_CLI - main php pear class
-Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
+Summary:	%{_pearname}-Frontend_CLI - main PHP PEAR class
+Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla PHP PEAR
 Group:		Development/Languages/PHP
 Requires:	php-pear-Archive_Tar
 Requires:	php-pear-Console_Getopt
@@ -73,8 +73,8 @@ Interfejs z linii poleceñ dla PEAR-a.
 Ta klasa ma w PEAR status: %{_status}.
 
 %package OS
-Summary:	%{_pearname}-OS - main php pear class
-Summary(pl):	%{_pearname}-OS - podstawowa klasa dla php pear
+Summary:	%{_pearname}-OS - main PHP PEAR class
+Summary(pl):	%{_pearname}-OS - podstawowa klasa dla PHP PEAR
 Group:		Development/Languages/PHP
 
 %description OS
