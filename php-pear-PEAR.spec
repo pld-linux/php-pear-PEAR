@@ -1,11 +1,14 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
+%define		_status		stable
+
 %define		_pearname	%{_class}
 Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
-Version:	1.0b1
-Release:	2
+Version:	1.0
+Release:	1
+Epoch:		1
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
@@ -25,11 +28,15 @@ The PEAR package contains:
 - the PEAR installer, for creating, distributing and installing
   packages
 
+This class has in PEAR status: %{_status}
+
 %description -l pl
 Pakiet PEAR zawiara:
 - Postawow± klasê PEAR
 - Mechanizm obs³ugi b³êdów PEAR_Error
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów
+
+Ta klasa ma w PEAR status: %{_status}
 
 %package Command
 Summary:	%{_pearname}-Command - main php pear class
@@ -39,8 +46,12 @@ Group:		Development/Languages/PHP
 %description Command
 Command class for PEAR.
 
+This class has in PEAR status: %{_status}
+
 %description -l pl Command
 Klasa Command dla PEARa.
+
+Ta klasa ma w PEAR status: %{_status}
 
 %package Frontend_CLI
 Summary:	%{_pearname}-Frontend_CLI - main php pear class
@@ -50,8 +61,12 @@ Group:		Development/Languages/PHP
 %description Frontend_CLI
 Command Line Frontend for PEAR.
 
+This class has in PEAR status: %{_status}
+
 %description -l pl Frontend_CLI
 Interfejs z linii poleceñ dla PEAR-a.
+
+Ta klasa ma w PEAR status: %{_status}
 
 %package OS
 Summary:	%{_pearname}-OS - main php pear class
@@ -61,8 +76,12 @@ Group:		Development/Languages/PHP
 %description OS
 OS_Guess class for PEAR.
 
+This class has in PEAR status: %{_status}
+
 %description -l pl OS
 Klasa OS_Guess dla PEARa.
+
+Ta klasa ma w PEAR status: %{_status}
 
 %prep
 %setup -q -c
