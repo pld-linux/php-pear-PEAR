@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.0
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 2.02
 Group:		Development/Languages/PHP
@@ -109,6 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%dir %{php_pear_dir}
 %{php_pear_dir}/*.php
 
 %files Command
