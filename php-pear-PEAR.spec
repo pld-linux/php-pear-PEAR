@@ -29,7 +29,7 @@ The PEAR package contains:
 - the PEAR installer, for creating, distributing and installing
   packages
 
-This class has in PEAR status: %{_status}.
+In PEAR status of this package is: %{_status}.
 
 %description -l pl
 Pakiet PEAR zawiara:
@@ -47,7 +47,7 @@ Group:		Development/Languages/PHP
 %description Command
 Command class for PEAR.
 
-This class has in PEAR status: %{_status}.
+In PEAR status of this package is: %{_status}.
 
 %description Command -l pl
 Klasa Command dla PEARa.
@@ -64,7 +64,7 @@ Requires:	php-pear-Console_Getopt
 %description Frontend_CLI
 Command Line Frontend for PEAR.
 
-This class has in PEAR status: %{_status}.
+In PEAR status of this package is: %{_status}.
 
 %description Frontend_CLI -l pl
 Interfejs z linii poleceñ dla PEAR-a.
@@ -79,7 +79,7 @@ Group:		Development/Languages/PHP
 %description OS
 OS_Guess class for PEAR.
 
-This class has in PEAR status: %{_status}.
+In PEAR status of this package is: %{_status}.
 
 %description OS -l pl
 Klasa OS_Guess dla PEARa.
