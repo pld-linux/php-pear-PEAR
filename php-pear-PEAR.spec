@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.3.1
-Release:	1.1
+Release:	1.2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -19,6 +19,7 @@ BuildRequires:	sed
 Requires:	php-pear
 Provides:	pear(StdClass)
 provides:	pear(parent)
+Provides:	pear(stdClass)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
