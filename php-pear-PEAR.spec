@@ -50,7 +50,7 @@ Command class for PEAR.
 In PEAR status of this package is: %{_status}.
 
 %description Command -l pl
-Klasa Command dla PEARa.
+Klasa Command dla PEAR-a.
 
 Ta klasa ma w PEAR status: %{_status}.
 
@@ -83,7 +83,7 @@ OS_Guess class for PEAR.
 In PEAR status of this package is: %{_status}.
 
 %description OS -l pl
-Klasa OS_Guess dla PEARa.
+Klasa OS_Guess dla PEAR-a.
 
 Ta klasa ma w PEAR status: %{_status}.
 
