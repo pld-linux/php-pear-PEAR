@@ -33,7 +33,7 @@ In PEAR status of this package is: %{_status}.
 
 %description -l pl
 Pakiet PEAR zawiara:
-- Postawow± klasê PEAR
+- Podstawow± klasê PEAR
 - Mechanizm obs³ugi b³êdów PEAR_Error
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów
 
