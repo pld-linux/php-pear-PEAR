@@ -4,8 +4,8 @@
 Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
-Version:	0.90
-Release:	6
+Version:	1.0b1
+Release:	1
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
@@ -15,6 +15,8 @@ BuildRequires:	sed
 Requires:	php-pear
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_noautoreq	'pear(/usr/src/redhat/RPMS/i386/PEAR)'
 
 %description
 The PEAR package contains:
