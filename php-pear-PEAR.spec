@@ -46,7 +46,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc %{_pearname}-%{version}/README*
 %dir %{php_pear_dir}/%{_pearname}
 %dir %{php_pear_dir}/OS
 %{php_pear_dir}/*.php
