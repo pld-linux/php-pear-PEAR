@@ -1,139 +1,93 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
-%define		_status		stable
+%define		_status		alpha
 %define		_pearname	%{_class}
 
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.3.5
-Release:	1
+Version:	1.4.0
+%define		_pre a9
+Release:	0.%{_pre}.1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	8fead7fddb93f9b3cecd740823daafd2
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
+# Source0-md5:	d13ef4458bae6a8ed03e559417c902bf
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	sed
+BuildRequires:	sed >= 4.0.0
 Requires:	php-pear
+Obsoletes:	php-pear-PEAR-Command
+Obsoletes:	php-pear-PEAR-Frontend-CLI
+Obsoletes:	php-pear-PEAR-OS
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-# this is in a comment
-%define		_noautoreq	'pear(../PEAR/RunTest.php)'
-
 %description
 The PEAR package contains:
-- the PEAR base class
+- the PEAR installer, for creating, distributing and installing packages
+- the alpha-quality PEAR_Exception PHP5 error handling mechanism
+- the beta-quality PEAR_ErrorStack advanced error handling mechanism
 - the PEAR_Error error handling mechanism
-- the PEAR installer, for creating, distributing and installing
-  packages
+- the OS_Guess class for retrieving info about the OS where PHP is running on
+- the System class for quick handling of common operations with files and
+  directories
+- the PEAR base class packages
 
 In PEAR status of this package is: %{_status}.
 
 %description -l pl
 Pakiet PEAR zawiara:
-- Podstawow± klasê PEAR
-- Mechanizm obs³ugi b³êdów PEAR_Error
-- PEAR installer do tworzenia, dystrybucji i instalowania pakietów
-
-Ta klasa ma w PEAR status: %{_status}.
-
-%package Command
-Summary:	%{_pearname}-Command - main PHP PEAR class
-Summary(pl):	%{_pearname}-Command - podstawowa klasa dla PHP PEAR
-Group:		Development/Languages/PHP
-
-%description Command
-Command class for PEAR.
-
-In PEAR status of this package is: %{_status}.
-
-%description Command -l pl
-Klasa Command dla PEAR-a.
-
-Ta klasa ma w PEAR status: %{_status}.
-
-%package Frontend_CLI
-Summary:	%{_pearname}-Frontend_CLI - main PHP PEAR class
-Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla PHP PEAR
-Group:		Development/Languages/PHP
-Requires:	php-pear-Archive_Tar
-Requires:	php-pear-Console_Getopt
-Obsoletes:	php-pear-devel
-
-%description Frontend_CLI
-Command Line Frontend for PEAR.
-
-In PEAR status of this package is: %{_status}.
-
-%description Frontend_CLI -l pl
-Interfejs z linii poleceñ dla PEAR-a.
-
-Ta klasa ma w PEAR status: %{_status}.
-
-%package OS
-Summary:	%{_pearname}-OS - main PHP PEAR class
-Summary(pl):	%{_pearname}-OS - podstawowa klasa dla PHP PEAR
-Group:		Development/Languages/PHP
-
-%description OS
-OS_Guess class for PEAR.
-
-In PEAR status of this package is: %{_status}.
-
-%description OS -l pl
-Klasa OS_Guess dla PEAR-a.
+- PEAR installer do tworzenia, dystrybucji i instalowania pakietów,
+- mechanizm PEAR_Exception (w fazie alpha) do obs³ugi b³êdów PHP5,
+- zaawansowany mechanizm PEAR_ErrorStack (w fazie beta) do obs³ugi b³êdów,
+- mechanizm obs³ugi b³êdów PEAR_Error,
+- klasê OS_Guess do pozyskiwania informacji na temat systemu operacyjnego,
+- klasê System do szybkiej obs³ugi typowych operacji na plikach i
+  katalogach,
+- podstawow± klasy PEAR.
 
 Ta klasa ma w PEAR status: %{_status}.
 
 %prep
-%setup -q -c
+%setup -q -c -n %{name}-%{version}%{_pre}
 
-#%build
-#cd %{_pearname}-%{version}/scripts
-#sed -e "s#@php_bin@#php#" pear.sh > pear.sh.tmp
-#mv -f pear.sh.tmp pear.sh
-#sed -e "s#@pear_version@#%{_version}#" pear.sh > pear.sh.tmp
-#mv -f pear.sh.tmp pear.sh
-#sed -e "s#@php_dir@#%{php_pear_dir}#" pear.sh > pear.sh.tmp
-#mv -f pear.sh.tmp pear.sh
+%build
+# put proper paths
+sed -i -e 's,@php_dir@,%{php_pear_dir},g' -e 's,@php_bin@,%{_bindir}/php,g' %{_pearname}-%{version}%{_pre}/scripts/*
+# fix include path
+sed -i -e 's,PEAR/PackageFile/Generator/v2/rw.php,PEAR/PackageFile/v2/rw.php,g' %{_pearname}-%{version}%{_pre}/PEAR/PackageFile/v2.php
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{php_pear_dir}/{%{_class}/{Command,Frontend},OS},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{php_pear_dir}/{%{_class}/{ChannelFile,Command,Downloader,Frontend,Installer/Role,PackageFile/{Generator,Parser,v2},Task,Validator},OS},%{_bindir}}
 
-install %{_pearname}-%{version}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
-install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
-install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
-install %{_pearname}-%{version}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
-install %{_pearname}-%{version}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
+install %{_pearname}-%{version}%{_pre}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}%{_pre}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}%{_pre}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
+install %{_pearname}-%{version}%{_pre}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
+install %{_pearname}-%{version}%{_pre}/%{_class}/ChannelFile/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/ChannelFile
+install %{_pearname}-%{version}%{_pre}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
+install %{_pearname}-%{version}%{_pre}/%{_class}/Downloader/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Downloader
+install %{_pearname}-%{version}%{_pre}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
+install %{_pearname}-%{version}%{_pre}/%{_class}/Installer/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Installer
+install %{_pearname}-%{version}%{_pre}/%{_class}/Installer/Role/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Installer/Role
+install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile
+install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/Generator/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/Generator
+install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/Parser/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/Parser
+install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/v2/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/v2
+install %{_pearname}-%{version}%{_pre}/%{_class}/Task/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Task
+install %{_pearname}-%{version}%{_pre}/%{_class}/Validator/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Validator
+install %{_pearname}-%{version}%{_pre}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}%{_pre}/scripts/peclcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}%{_pre}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
+install %{_pearname}-%{version}%{_pre}/scripts/pecl.sh $RPM_BUILD_ROOT%{_bindir}/pecl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%{php_pear_dir}/*.php
-
-%files Command
-%defattr(644,root,root,755)
-%dir %{php_pear_dir}/%{_class}/Command
-%dir %{php_pear_dir}/%{_class}/Frontend
-%attr(755,root,root) %{_bindir}/pear
-%{php_pear_dir}/%{_class}/*.php
-%{php_pear_dir}/%{_class}/Command/*.php
-%{php_pear_dir}/*.dtd
-
-%files Frontend_CLI
-%defattr(644,root,root,755)
-%{php_pear_dir}/%{_class}/Frontend/*.php
-
-%files OS
-%defattr(644,root,root,755)
-%dir %{php_pear_dir}/OS
-%{php_pear_dir}/OS/*.php
+%{_bindir}/*
+%{php_pear_dir}/*
