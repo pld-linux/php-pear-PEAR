@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.3.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -60,6 +60,7 @@ Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
 Requires:	php-pear-Archive_Tar
 Requires:	php-pear-Console_Getopt
+Obsoletes:	php-pear-devel
 
 %description Frontend_CLI
 Command Line Frontend for PEAR.
