@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.3.1
-Release:	1
+Release:	1.1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
