@@ -71,7 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files Command
 %defattr(644,root,root,755)
-%dir %{php_pear_dir}/%{_class}/{Command,Frontend}
+%dir %{php_pear_dir}/%{_class}/Command
+%dir %{php_pear_dir}/%{_class}/Frontend
 %{php_pear_dir}/%{_class}/*.php
 %{php_pear_dir}/%{_class}/Command/*.php
 %{php_pear_dir}/%{_class}/Frontend/*.php
