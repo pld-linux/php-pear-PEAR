@@ -14,6 +14,11 @@ BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed
 Requires:	php-pear
 BuildArch:	noarch
+# This is temporary empty class
+Provides:       pear(stdClass)
+Provides:       pear(StdClass)
+# Temporary - this is not OK:
+Provides:       pear(parent)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_noautoreq	'pear(/usr/src/redhat/RPMS/i386/PEAR)'
