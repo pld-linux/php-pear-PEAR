@@ -5,7 +5,7 @@ Summary:	%{_pearname} - main php pear class
 Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	1.0b1
-Release:	1
+Release:	2
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
@@ -51,6 +51,7 @@ Klasa Command dla PEARa.
 Summary:	%{_pearname}-Frontend_CLI - main php pear class
 Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
+Provides:	pear(Frontend)
 
 %description Frontend_CLI
 Command Line Frontend for PEAR.
