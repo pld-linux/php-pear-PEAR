@@ -89,12 +89,12 @@ Ta klasa ma w PEAR status: %{_status}.
 
 %build
 cd %{_pearname}-%{version}/scripts
-sed -e "s#@php_bin@#php#" pear.in > pear.in.tmp
-mv -f pear.in.tmp pear.in
-sed -e "s#@pear_version@#%{version}#" pear.in > pear.in.tmp
-mv -f pear.in.tmp pear.in
-sed -e "s#@php_dir@#%{php_pear_dir}#" pear.in > pear.in.tmp
-mv -f pear.in.tmp pear.in
+sed -e "s#@php_bin@#php#" pear.sh > pear.sh.tmp
+mv -f pear.sh.tmp pear.sh
+sed -e "s#@pear_version@#%{version}#" pear.sh > pear.sh.tmp
+mv -f pear.sh.tmp pear.sh
+sed -e "s#@php_dir@#%{php_pear_dir}#" pear.sh > pear.sh.tmp
+mv -f pear.sh.tmp pear.sh
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -106,7 +106,8 @@ install %{_pearname}-%{version}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
 install %{_pearname}-%{version}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
 install %{_pearname}-%{version}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
 install %{_pearname}-%{version}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
-install %{_pearname}-%{version}/scripts/pear.in $RPM_BUILD_ROOT%{_bindir}/pear
+install %{_pearname}-%{version}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
+install %{_pearname}-%{version}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
 
 %clean
 rm -rf $RPM_BUILD_ROOT
