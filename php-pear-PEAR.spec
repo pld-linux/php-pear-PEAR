@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.3.3.1
-Release:	2
+Release:	3
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -20,7 +20,8 @@ Requires:	php-pear
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(/usr/src/redhat/RPMS/i386/PEAR)'
+# this is in a comment
+%define		_noautoreq	'pear(../PEAR/RunTest.php)'
 
 %description
 The PEAR package contains:
