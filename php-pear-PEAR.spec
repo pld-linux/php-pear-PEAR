@@ -7,13 +7,13 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_pre a9
-Release:	0.%{_pre}.2
+%define		_pre a10
+Release:	0.%{_pre}.1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
-# Source0-md5:	d13ef4458bae6a8ed03e559417c902bf
+# Source0-md5:	59ee4e0f5ce9cc1f5331e41f225a5e90
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed >= 4.0.0
