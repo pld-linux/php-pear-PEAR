@@ -87,14 +87,14 @@ Ta klasa ma w PEAR status: %{_status}.
 %prep
 %setup -q -c
 
-%build
-cd %{_pearname}-%{version}/scripts
-sed -e "s#@php_bin@#php#" pear.sh > pear.sh.tmp
-mv -f pear.sh.tmp pear.sh
-sed -e "s#@pear_version@#%{_version}#" pear.sh > pear.sh.tmp
-mv -f pear.sh.tmp pear.sh
-sed -e "s#@php_dir@#%{php_pear_dir}#" pear.sh > pear.sh.tmp
-mv -f pear.sh.tmp pear.sh
+#%build
+#cd %{_pearname}-%{version}/scripts
+#sed -e "s#@php_bin@#php#" pear.sh > pear.sh.tmp
+#mv -f pear.sh.tmp pear.sh
+#sed -e "s#@pear_version@#%{_version}#" pear.sh > pear.sh.tmp
+#mv -f pear.sh.tmp pear.sh
+#sed -e "s#@php_dir@#%{php_pear_dir}#" pear.sh > pear.sh.tmp
+#mv -f pear.sh.tmp pear.sh
 
 %install
 rm -rf $RPM_BUILD_ROOT
