@@ -1,11 +1,11 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
 %define		_pearname	%{_class}
-Summary:	%{_class} - main php pear class
-Summary(pl):	%{_class} - podstawowa klasa dla php pear
+Summary:	%{_pearname} - main php pear class
+Summary(pl):	%{_pearname} - podstawowa klasa dla php pear
 Name:		php-pear-%{_pearname}
 Version:	0.90
-Release:	4
+Release:	5
 License:	PHP 2.02
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
@@ -15,6 +15,7 @@ BuildRequires:	sed
 Requires:	php-pear
 # This is temporary empty class
 Provides:	pear(stdClass)
+Provides:	pear(StdClass)
 # Temporary - this is not OK:
 Provides:	pear(parent)
 BuildArch:	noarch
@@ -34,8 +35,8 @@ Pakiet PEAR zawiara:
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów
 
 %package Command
-Summary:	%{_class} - main php pear class
-Summary(pl):	%{_class} - podstawowa klasa dla php pear
+Summary:	%{_pearname}-Command - main php pear class
+Summary(pl):	%{_pearname}-Command - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
 Requires:	pear(Frontend)
 
@@ -46,8 +47,8 @@ Command class for PEAR.
 Klasa Command dla PEARa.
 
 %package Frontend_CLI
-Summary:	%{_class} - main php pear class
-Summary(pl):	%{_class} - podstawowa klasa dla php pear
+Summary:	%{_pearname}-Frontend_CLI - main php pear class
+Summary(pl):	%{_pearname}-Frontend_CLI - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
 Provides:	pear(Frontend)
 
@@ -58,8 +59,8 @@ Command Line Frontend for PEAR.
 Interfejs z linii poleceñ dla PEAR-a.
 
 %package OS
-Summary:	%{_class} - main php pear class
-Summary(pl):	%{_class} - podstawowa klasa dla php pear
+Summary:	%{_pearname}-OS - main php pear class
+Summary(pl):	%{_pearname}-OS - podstawowa klasa dla php pear
 Group:		Development/Languages/PHP
 
 %description OS
