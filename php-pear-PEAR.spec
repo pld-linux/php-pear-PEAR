@@ -8,16 +8,18 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre a11
-Release:	0.%{_pre}.1
+Release:	0.%{_pre}.5
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
 # Source0-md5:	4e0bab553fbe2702b4283a0b73308a50
+Patch0:		%{name}-memory.patch
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed >= 4.0.0
 Requires:	php-pear
+Requires:	php-cli
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
@@ -26,13 +28,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The PEAR package contains:
-- the PEAR installer, for creating, distributing and installing packages
+- the PEAR installer, for creating, distributing and installing
+  packages
 - the alpha-quality PEAR_Exception PHP5 error handling mechanism
 - the beta-quality PEAR_ErrorStack advanced error handling mechanism
 - the PEAR_Error error handling mechanism
-- the OS_Guess class for retrieving info about the OS where PHP is running on
-- the System class for quick handling of common operations with files and
-  directories
+- the OS_Guess class for retrieving info about the OS where PHP is
+  running on
+- the System class for quick handling of common operations with files
+  and directories
 - the PEAR base class packages
 
 In PEAR status of this package is: %{_status}.
@@ -41,9 +45,11 @@ In PEAR status of this package is: %{_status}.
 Pakiet PEAR zawiara:
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów,
 - mechanizm PEAR_Exception (w fazie alpha) do obs³ugi b³êdów PHP5,
-- zaawansowany mechanizm PEAR_ErrorStack (w fazie beta) do obs³ugi b³êdów,
+- zaawansowany mechanizm PEAR_ErrorStack (w fazie beta) do obs³ugi
+  b³êdów,
 - mechanizm obs³ugi b³êdów PEAR_Error,
-- klasê OS_Guess do pozyskiwania informacji na temat systemu operacyjnego,
+- klasê OS_Guess do pozyskiwania informacji na temat systemu
+  operacyjnego,
 - klasê System do szybkiej obs³ugi typowych operacji na plikach i
   katalogach,
 - podstawow± klasy PEAR.
@@ -52,6 +58,7 @@ Ta klasa ma w PEAR status: %{_status}.
 
 %prep
 %setup -q -c -n %{name}-%{version}%{_pre}
+%patch0 -p2
 
 %build
 # put proper paths
