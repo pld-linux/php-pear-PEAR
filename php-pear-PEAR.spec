@@ -8,7 +8,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-Release:	0.%{_pre}.1
+Release:	0.%{_pre}.2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
