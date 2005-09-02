@@ -1,19 +1,19 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
-%define		_status		alpha
+%define		_status		beta
 %define		_pearname	%{_class}
 
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_pre a11
-Release:	0.%{_pre}.5
+%define		_pre b1
+Release:	0.%{_pre}.1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
-# Source0-md5:	4e0bab553fbe2702b4283a0b73308a50
+# Source0-md5:	fac6e8d80991ae3a63cb6a616958e833
 Patch0:		%{name}-memory.patch
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
