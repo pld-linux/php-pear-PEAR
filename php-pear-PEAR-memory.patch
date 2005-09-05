@@ -1,8 +1,0 @@
---- ./php-pear-PEAR-1.4.0b1/PEAR-1.4.0b1/scripts/pear.sh~	2005-04-18 01:39:52.000000000 +0300
-+++ ./php-pear-PEAR-1.4.0b1/PEAR-1.4.0b1/scripts/pear.sh	2005-06-19 17:17:41.000000000 +0300
-@@ -25,4 +25,4 @@
-   fi
- fi
- 
--exec $PHP -C -q $INCARG -d output_buffering=1 $INCDIR/pearcmd.php "$@"
-+exec $PHP -C -q $INCARG -d output_buffering=1 -d memory_limit=16M $INCDIR/pearcmd.php "$@"
