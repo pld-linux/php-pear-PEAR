@@ -9,7 +9,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.1
+%define		_rel 3.3
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -62,11 +62,14 @@ Ta klasa ma w PEAR status: %{_status}.
 %pear_package_setup -n %{_pearname}-%{version}%{_pre}
 %patch0 -p2
 
+# don't know why this happens:
+grep -rl "%{_builddir}/%{name}-%{version}" usr | xargs -r sed -i -e "s,%{_builddir}/%{name}-%{version},,"
+
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT
-cp -a build/* $RPM_BUILD_ROOT
+cp -a usr $RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{php_pear_dir}/.{channels,dep*,filemap,lock}
 
