@@ -9,14 +9,14 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_pre b1
-%define		_rel 3.22
-Release:	0.%{_pre}.%{_rel}
+%define		_rc RC2
+%define		_rel 0.1
+Release:	1.%{_rc}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
-# Source0-md5:	fac6e8d80991ae3a63cb6a616958e833
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_rc}.tgz
+# Source0-md5:	8f357635bb283d37e4a237cfaee43c07
 Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
@@ -30,9 +30,6 @@ Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-# displayed in %post
-%define     _noautocompressdoc  optional-packages.txt
 
 %description
 The PEAR package contains:
@@ -65,10 +62,6 @@ Pakiet PEAR zawiara:
 Ta klasa ma w PEAR status: %{_status}.
 
 %prep
-# TODO:
-# PEAR: Optional feature remoteinstall available (adds the ability to install packages to a remote ftp server)
-# PEAR: Optional feature webinstaller available (PEAR's web-based installer)
-# PEAR: Optional feature gtkinstaller available (PEAR's PHP-GTK-based installer)
 %pear_package_setup
 %patch0 -p2
 %patch1 -p1
@@ -98,14 +91,9 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
-	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
-fi
-
 %files
 %defattr(644,root,root,755)
-%doc install.log optional-packages.txt
+%doc install.log
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
