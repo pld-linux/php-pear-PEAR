@@ -1,7 +1,7 @@
 %include	/usr/lib/rpm/macros.php
 %include	/usr/lib/rpm/macros.pear
 %define		_class		PEAR
-%define		_status		beta
+%define		_status		stable
 %define		_pearname	%{_class}
 %define		_noautoreq	'pear(PEAR/FTP.php)'
 
@@ -9,20 +9,19 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_rc RC2
-%define		_rel 0.3
-Release:	1.%{_rc}.%{_rel}
+%define		_rel 0.1
+Release:	1.%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_rc}.tgz
-# Source0-md5:	8f357635bb283d37e4a237cfaee43c07
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
+# Source0-md5:	8a1cf99a637d5420b7749a1c3dfaceb5
 Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		%{name}-rpmpkgname.patch
 Patch3:		%{name}-rpmvars.patch
-URL:		http://pear.php.net/package/PEAR/
+URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-pear-build >= 0.3
 Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
