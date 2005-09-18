@@ -9,7 +9,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.10
+%define		_rel 3.15
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -61,6 +61,10 @@ Pakiet PEAR zawiara:
 Ta klasa ma w PEAR status: %{_status}.
 
 %prep
+# TODO:
+# PEAR: Optional feature remoteinstall available (adds the ability to install packages to a remote ftp server)
+# PEAR: Optional feature webinstaller available (PEAR's web-based installer)
+# PEAR: Optional feature gtkinstaller available (PEAR's PHP-GTK-based installer)
 %pear_package_setup
 %patch0 -p2
 %patch1 -p1
@@ -77,7 +81,7 @@ pearcmd() {
 pearcmd config-set doc_dir %{_docdir} || exit
 pearcmd config-set data_dir %{php_pear_dir}/data || exit
 pearcmd config-set php_dir %{php_pear_dir} || exit
-pearcmd config-set test_dir %{php_pear_dir}/test || exit
+pearcmd config-set test_dir %{php_pear_dir}/tests || exit
 pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
@@ -86,6 +90,9 @@ cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+echo 'pear/PEAR can optionally use package "pear/PEAR_Delegator"'
 
 %files
 %defattr(644,root,root,755)
