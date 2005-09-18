@@ -10,7 +10,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.17
+%define		_rel 3.20
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -20,7 +20,7 @@ Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
 URL:		http://pear.php.net/package/PEAR/
-BuildRequires:	php-pear-build
+BuildRequires:	php-pear-build >= 0.3
 Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
 Obsoletes:	php-pear-PEAR-Command
@@ -28,6 +28,9 @@ Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# displayed in %post
+%define     _noautocompressdoc  optional-packages.txt
 
 %description
 The PEAR package contains:
@@ -91,10 +94,13 @@ cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-echo 'pear/PEAR can optionally use package "pear/PEAR_Delegator"'
+if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
+	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
+fi
 
 %files
 %defattr(644,root,root,755)
+%doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
