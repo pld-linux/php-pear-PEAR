@@ -9,7 +9,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.3
+%define		_rel 3.8
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -17,10 +17,12 @@ Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
 # Source0-md5:	fac6e8d80991ae3a63cb6a616958e833
 Patch0:		%{name}-memory.patch
+Patch1:		%{name}-sysconfdir.patch
 URL:		http://pear.php.net/package/PEAR/
+BuildRequires:	php-pear-PEAR >= 1:1.4.0-0.a11.5
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed >= 4.0.0
-Requires:	php-pear >= 4:1.0-4
+Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
@@ -59,16 +61,26 @@ Pakiet PEAR zawiara:
 Ta klasa ma w PEAR status: %{_status}.
 
 %prep
-%pear_package_setup -n %{_pearname}-%{version}%{_pre}
+%pear_package_setup
 %patch0 -p2
-
-# don't know why this happens:
-grep -rl "%{_builddir}/%{name}-%{version}" usr | xargs -r sed -i -e "s,%{_builddir}/%{name}-%{version},,"
+%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_sysconfdir}
+
+D=%{_builddir}/%{name}-%{version}
+pearcmd() {
+	HOME=${D} php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php "$@"
+}
+pearcmd config-set doc_dir %{_docdir} || exit
+pearcmd config-set data_dir %{php_pear_dir}/data || exit
+pearcmd config-set php_dir %{php_pear_dir} || exit
+pearcmd config-set test_dir %{php_pear_dir}/test || exit
+pearcmd config-set sig_bin %{_bindir}/gpg || exit
+cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
+
 cp -a usr $RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{php_pear_dir}/.{channels,dep*,filemap,lock}
@@ -79,5 +91,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %{php_pear_dir}/.registry/*.reg
 %{php_pear_dir}/*
