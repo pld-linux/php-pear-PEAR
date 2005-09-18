@@ -9,7 +9,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.8
+%define		_rel 3.9
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -19,7 +19,7 @@ Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
 URL:		http://pear.php.net/package/PEAR/
-BuildRequires:	php-pear-PEAR >= 1:1.4.0-0.a11.5
+BuildRequires:	php-pear-PEAR >= 1:1.4.0-0.a11.1
 BuildRequires:	rpm-php-pearprov >= 4.0.2-98
 BuildRequires:	sed >= 4.0.0
 Requires:	php-pear >= 4:1.0-5.5
@@ -68,7 +68,7 @@ Ta klasa ma w PEAR status: %{_status}.
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=%{_builddir}/%{name}-%{version}
 pearcmd() {
@@ -81,16 +81,15 @@ pearcmd config-set test_dir %{php_pear_dir}/test || exit
 pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
-cp -a usr $RPM_BUILD_ROOT
-
-rm -rf $RPM_BUILD_ROOT%{php_pear_dir}/.{channels,dep*,filemap,lock}
+cp -a ./%{php_pear_dir}/{.registry,*} $RPM_BUILD_ROOT%{php_pear_dir}
+cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
+%attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
 %{php_pear_dir}/*
