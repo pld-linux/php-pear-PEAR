@@ -1,14 +1,4 @@
 --- ./usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:42:13.000000000 +0300
-+++ /usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:47:08.000000000 +0300
-@@ -877,6 +877,7 @@
-         $info['package'] = $pf->getPackage();
-         $info['version'] = $pf->getVersion();
-         $info['release_license'] = $pf->getLicense();
-+        $info['release_state'] = $pf->getState();
-         if ($pf->getDeps()) {
-             if ($pf->getPackagexmlVersion() == '1.0') {
-                 $requires = $conflicts = array();
---- ./usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:42:13.000000000 +0300
 +++ /usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:57:39.000000000 +0300
 @@ -877,6 +877,11 @@
          $info['package'] = $pf->getPackage();
