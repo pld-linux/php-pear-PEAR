@@ -10,15 +10,17 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_pre b1
-%define		_rel 3.20
+%define		_rel 3.22
 Release:	0.%{_pre}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
 # Source0-md5:	fac6e8d80991ae3a63cb6a616958e833
+Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
+Patch2:		%{name}-rpmpkgname.patch
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	php-pear-build >= 0.3
 Requires:	php-pear >= 4:1.0-5.5
@@ -70,6 +72,7 @@ Ta klasa ma w PEAR status: %{_status}.
 %pear_package_setup
 %patch0 -p2
 %patch1 -p1
+%patch2 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -89,6 +92,8 @@ cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
 cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %clean
 rm -rf $RPM_BUILD_ROOT
