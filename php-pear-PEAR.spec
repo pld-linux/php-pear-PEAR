@@ -10,7 +10,7 @@ Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
 %define		_rc RC2
-%define		_rel 0.1
+%define		_rel 0.3
 Release:	1.%{_rc}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -21,6 +21,7 @@ Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		%{name}-rpmpkgname.patch
+Patch3:		%{name}-rpmvars.patch
 URL:		http://pear.php.net/package/PEAR/
 BuildRequires:	php-pear-build >= 0.3
 Requires:	php-pear >= 4:1.0-5.5
@@ -66,6 +67,7 @@ Ta klasa ma w PEAR status: %{_status}.
 %patch0 -p2
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -74,14 +76,14 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=%{_builddir}/%{name}-%{version}
 pearcmd() {
-	HOME=${D} php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php "$@"
+	php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
 }
 pearcmd config-set doc_dir %{_docdir} || exit
 pearcmd config-set data_dir %{php_pear_dir}/data || exit
 pearcmd config-set php_dir %{php_pear_dir} || exit
 pearcmd config-set test_dir %{php_pear_dir}/tests || exit
 pearcmd config-set sig_bin %{_bindir}/gpg || exit
-cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
+cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
 cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
