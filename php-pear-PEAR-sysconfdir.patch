@@ -1,0 +1,11 @@
+--- /usr/share/pear/PEAR/Config.php~	2005-09-18 10:41:04.000000000 +0300
++++ /usr/share/pear/PEAR/Config.php	2005-09-18 10:48:21.000000000 +0300
+@@ -61,7 +61,7 @@
+ } elseif (getenv('SystemRoot')) {
+     define('PEAR_CONFIG_SYSCONFDIR', getenv('SystemRoot'));
+ } else {
+-    define('PEAR_CONFIG_SYSCONFDIR', PHP_SYSCONFDIR);
++    define('PEAR_CONFIG_SYSCONFDIR', '/etc');
+ }
+ 
+ // Default for master_server
