@@ -87,7 +87,7 @@ pearcmd config-set test_dir %{php_pear_dir}/tests || exit
 pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/.pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
-cp -a ./%{php_pear_dir}/{.registry,*} $RPM_BUILD_ROOT%{php_pear_dir}
+%pear_package_install
 cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 
 %clean
