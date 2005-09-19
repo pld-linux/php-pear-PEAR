@@ -9,7 +9,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_rel 0.1
+%define		_rel 0.2
 Release:	1.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -67,6 +67,8 @@ Ta klasa ma w PEAR status: %{_status}.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+
+find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
 %install
 rm -rf $RPM_BUILD_ROOT
