@@ -1,0 +1,23 @@
+--- .//usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:13:23.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:22:11.000000000 +0300
+@@ -794,15 +794,17 @@
+         if (isset($options['rpm-pkgname'])) {
+             $rpm_pkgname_format = $options['rpm-pkgname'];
+         } else {
+-            if ($pf->getChannel() == 'pear.php.net' || $pf->getChannel() == 'pecl.php.net') {
+-                $alias = 'PEAR';
++			if ($pf->getChannel() == 'pear.php.net') {
++                $alias = 'php-pear';
++			} elseif ($pf->getChannel() == 'pecl.php.net') {
++                $alias = 'php-pecl';
+             } else {
+                 $chan = &$reg->getChannel($pf->getChannel());
+                 $alias = $chan->getAlias();
+                 $alias = strtoupper($alias);
+                 $info['possible_channel'] = $pf->getChannel() . '/';
+             }
+-            $rpm_pkgname_format = $alias . '::%s';
++            $rpm_pkgname_format = $alias . '-%s';
+         }
+ 
+         $info['extra_headers'] = '';
