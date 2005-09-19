@@ -21,7 +21,7 @@ Patch1:		%{name}-sysconfdir.patch
 Patch2:		%{name}-rpmpkgname.patch
 Patch3:		%{name}-rpmvars.patch
 URL:		http://pear.php.net/package/PEAR
-BuildRequires:	rpm-php-pearprov >= 4.4.2-10.2
+BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	php-pear >= 4:1.0-6
 Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
