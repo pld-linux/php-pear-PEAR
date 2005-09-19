@@ -8,7 +8,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_rel 0.6
+%define		_rel 0.7
 Release:	1.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -22,6 +22,7 @@ Patch2:		%{name}-rpmpkgname.patch
 Patch3:		%{name}-rpmvars.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	rpm-php-pearprov >= 4.4.2-10.2
+BuildRequires:	php-pear >= 4:1.0-6
 Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
 Obsoletes:	php-pear-PEAR-Command
