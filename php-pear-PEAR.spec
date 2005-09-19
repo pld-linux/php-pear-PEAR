@@ -9,7 +9,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_rel 0.2
+%define		_rel 0.4
 Release:	1.%{_rel}
 Epoch:		1
 License:	PHP 3.0
@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
-D=%{_builddir}/%{name}-%{version}
+D=$(pwd)
 pearcmd() {
 	php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
 }
