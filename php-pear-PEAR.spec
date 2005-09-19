@@ -1,6 +1,6 @@
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
-%define		_status		beta
+%define		_status		stable
 %define		_pearname	%{_class}
 %define		_noautoreq	'pear(PEAR/FTP.php)'
 
@@ -8,18 +8,21 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-%define		_pre b1
-Release:	0.%{_pre}.3
+%define		_rel 0.6
+Release:	1.%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_pre}.tgz
-# Source0-md5:	fac6e8d80991ae3a63cb6a616958e833
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
+# Source0-md5:	8a1cf99a637d5420b7749a1c3dfaceb5
+Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
-URL:		http://pear.php.net/package/PEAR/
-BuildRequires:	rpm-php-pearprov >= 4.0.2-98
-BuildRequires:	sed >= 4.0.0
-Requires:	php-pear
+Patch1:		%{name}-sysconfdir.patch
+Patch2:		%{name}-rpmpkgname.patch
+Patch3:		%{name}-rpmvars.patch
+URL:		http://pear.php.net/package/PEAR
+BuildRequires:	rpm-php-pearprov >= 4.4.2-10.2
+Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-cli
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
@@ -58,44 +61,42 @@ Pakiet PEAR zawiara:
 Ta klasa ma w PEAR status: %{_status}.
 
 %prep
-%setup -q -c -n %{name}-%{version}%{_pre}
+%pear_package_setup
 %patch0 -p2
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
-%build
-# put proper paths
-sed -i -e 's,@php_dir@,%{php_pear_dir},g' -e 's,@php_bin@,%{_bindir}/php,g' %{_pearname}-%{version}%{_pre}/scripts/*
-# fix include path
-sed -i -e 's,PEAR/PackageFile/Generator/v2/rw.php,PEAR/PackageFile/v2/rw.php,g' %{_pearname}-%{version}%{_pre}/PEAR/PackageFile/v2.php
+find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{php_pear_dir}/{%{_class}/{ChannelFile,Command,Downloader,Frontend,Installer/Role,PackageFile/{Generator,Parser,v2},Task,Validator},OS},%{_bindir}}
 
-install %{_pearname}-%{version}%{_pre}/*.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}%{_pre}/*.dtd $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}%{_pre}/OS/*.php $RPM_BUILD_ROOT%{php_pear_dir}/OS
-install %{_pearname}-%{version}%{_pre}/%{_class}/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}
-install %{_pearname}-%{version}%{_pre}/%{_class}/ChannelFile/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/ChannelFile
-install %{_pearname}-%{version}%{_pre}/%{_class}/Command/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Command
-install %{_pearname}-%{version}%{_pre}/%{_class}/Downloader/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Downloader
-install %{_pearname}-%{version}%{_pre}/%{_class}/Frontend/CLI.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Frontend
-install %{_pearname}-%{version}%{_pre}/%{_class}/Installer/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Installer
-install %{_pearname}-%{version}%{_pre}/%{_class}/Installer/Role/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Installer/Role
-install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile
-install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/Generator/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/Generator
-install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/Parser/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/Parser
-install %{_pearname}-%{version}%{_pre}/%{_class}/PackageFile/v2/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/PackageFile/v2
-install %{_pearname}-%{version}%{_pre}/%{_class}/Task/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Task
-install %{_pearname}-%{version}%{_pre}/%{_class}/Validator/*.php $RPM_BUILD_ROOT%{php_pear_dir}/%{_class}/Validator
-install %{_pearname}-%{version}%{_pre}/scripts/pearcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}%{_pre}/scripts/peclcmd.php $RPM_BUILD_ROOT%{php_pear_dir}
-install %{_pearname}-%{version}%{_pre}/scripts/pear.sh $RPM_BUILD_ROOT%{_bindir}/pear
-install %{_pearname}-%{version}%{_pre}/scripts/pecl.sh $RPM_BUILD_ROOT%{_bindir}/pecl
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
+
+D=$(pwd)
+pearcmd() {
+	php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
+}
+pearcmd config-set doc_dir %{_docdir} || exit
+pearcmd config-set data_dir %{php_pear_dir}/data || exit
+pearcmd config-set php_dir %{php_pear_dir} || exit
+pearcmd config-set test_dir %{php_pear_dir}/tests || exit
+pearcmd config-set sig_bin %{_bindir}/gpg || exit
+cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
+
+%pear_package_install
+cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
+
+install %{SOURCE1} $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc install.log
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
+%{php_pear_dir}/.registry/*.reg
 %{php_pear_dir}/*
