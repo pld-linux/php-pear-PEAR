@@ -8,7 +8,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.0
-Release:	1
+Release:	1.7
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -100,4 +100,8 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
-%{php_pear_dir}/*
+%{php_pear_dir}/*.php
+%{php_pear_dir}/OS
+%{php_pear_dir}/PEAR/*
+
+%{php_pear_dir}/data/*
