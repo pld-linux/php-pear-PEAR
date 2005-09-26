@@ -5,4 +5,4 @@
  fi
  
 -exec $PHP -C -q $INCARG -d output_buffering=1 $INCDIR/pearcmd.php "$@"
-+exec $PHP -C -q $INCARG -d output_buffering=1 -d memory_limit=16M $INCDIR/pearcmd.php "$@"
++exec $PHP -C -q $INCARG -d output_buffering=1 -d memory_limit=24M $INCDIR/pearcmd.php "$@"
