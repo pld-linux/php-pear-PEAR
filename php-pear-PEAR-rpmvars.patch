@@ -185,3 +185,14 @@
          if (function_exists('file_get_contents')) {
              fclose($fp);
              $spec_contents = preg_replace('/@([a-z0-9_-]+)@/e', '$info["\1"]',
+--- .//usr/share/pear/PEAR/Command/Package.php	2005-09-29 00:26:51.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-29 00:26:38.000000000 +0300
+@@ -1024,7 +1024,7 @@
+                         $tar->popErrorHandling();
+                         if ($a === null || PEAR::isError($a)) {
+                             // this doesn't have a package.xml version 1.0
+-                            $requires[] = 'php-pear-PEAR >= ' .
++                            $requires[] = 'php-pear-PEAR >= 1:' .
+                                 $deps['required']['pearinstaller']['min'] . "\n";
+                         }
+                     }
