@@ -1,3 +1,17 @@
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:42:13.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:57:39.000000000 +0300
+@@ -877,6 +877,11 @@
+         $info['package'] = $pf->getPackage();
+         $info['version'] = $pf->getVersion();
+         $info['release_license'] = $pf->getLicense();
++        $info['release_state'] = $pf->getState();
++		list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
++		if (empty($info['subclass'])) {
++			$info['subclass'] = '%{nil}';
++		}
+         if ($pf->getDeps()) {
+             if ($pf->getPackagexmlVersion() == '1.0') {
+                 $requires = $conflicts = array();
 --- .//usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:18:13.000000000 +0300
 +++ /usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:16:37.000000000 +0300
 @@ -908,7 +908,7 @@
