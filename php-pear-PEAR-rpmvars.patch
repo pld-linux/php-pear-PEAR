@@ -208,3 +208,16 @@
  				if ($attr['role'] == 'test') {
  					$info['test_files'] .= "$prefix/$name\n";
  
+--- .//usr/share/pear/PEAR/Command/Package.php	2005-09-29 01:13:50.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-29 01:13:35.000000000 +0300
+@@ -862,8 +862,8 @@
+                     break;
+                 }
+                 $name = str_replace('\\', '/', $name);
+-				if ($attr['baseinstalldir']) {
+-					$name = $attr['baseinstalldir'] . '/' . $name;
++				if (isset($attr['baseinstalldir']) and ($ttrim = trim($attr['baseinstalldir'], '/'))) {
++					$name = $ttrim . '/' . $name;
+ 				}
+ 				if ($attr['role'] == 'test') {
+ 					$info['test_files'] .= "$prefix/$name\n";
