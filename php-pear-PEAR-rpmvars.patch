@@ -1,14 +1,60 @@
---- ./usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:42:13.000000000 +0300
-+++ /usr/share/pear/PEAR/Command/Package.php	2005-09-18 16:57:39.000000000 +0300
-@@ -877,6 +877,11 @@
-         $info['package'] = $pf->getPackage();
-         $info['version'] = $pf->getVersion();
-         $info['release_license'] = $pf->getLicense();
-+        $info['release_state'] = $pf->getState();
-+		list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
-+		if (empty($info['subclass'])) {
-+			$info['subclass'] = '%{nil}';
-+		}
-         if ($pf->getDeps()) {
-             if ($pf->getPackagexmlVersion() == '1.0') {
-                 $requires = $conflicts = array();
+--- .//usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:18:13.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:16:37.000000000 +0300
+@@ -908,7 +908,7 @@
+                         $chan = &$reg->getChannel($dep['channel']);
+                         $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
+                     } else {
+-                        $package = 'PEAR::' . $dep['name'];
++                        $package = 'php-pear-' . $dep['name'];
+                     }
+                     $trans = array(
+                         '>' => '>',
+@@ -933,10 +933,14 @@
+                     }
+                 }
+                 if (count($requires)) {
+-                    $info['extra_headers'] .= 'Requires: ' . implode(', ', $requires) . "\n";
++					foreach ($requires as $dep) {
++						$info['extra_headers'] .= "Requires:\t" . $dep . "\n";
++					}
+                 }
+                 if (count($conflicts)) {
+-                    $info['extra_headers'] .= 'Conflicts: ' . implode(', ', $conflicts) . "\n";
++					foreach ($conflicts as $dep) {
++						$info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
++					}
+                 }
+             } else {
+                 $info['package2xml'] = '2'; // tell the spec to use package2.xml
+@@ -951,7 +955,7 @@
+                             $chan = &$reg->getChannel($dep['channel']);
+                             $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
+                         } else {
+-                            $package = 'PEAR::' . $dep['name'];
++                            $package = 'php-pear-' . $dep['name'];
+                         }
+                         if (!isset($dep['min']) && !isset($dep['max']) &&
+                               !isset($dep['exclude'])) {
+@@ -996,15 +1000,19 @@
+                         $tar->popErrorHandling();
+                         if ($a === null || PEAR::isError($a)) {
+                             // this doesn't have a package.xml version 1.0
+-                            $requires[] = 'PEAR::PEAR >= ' .
++                            $requires[] = 'php-pear-PEAR >= ' .
+                                 $deps['required']['pearinstaller']['min'] . "\n";
+                         }
+                     }
+                     if (count($requires)) {
+-                        $info['extra_headers'] .= 'Requires: ' . implode(', ', $requires) . "\n";
++						foreach ($requires as $dep) {
++							$info['extra_headers'] .= "Requires:\t" . $dep . "\n";
++						}
+                     }
+                     if (count($conflicts)) {
+-                        $info['extra_headers'] .= 'Conflicts: ' . implode(', ', $conflicts) . "\n";
++						foreach ($conflicts as $dep) {
++							$info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
++						}
+                     }
+                 }
+             }
