@@ -8,7 +8,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.1
-Release:	1.1
+Release:	1.4
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -92,7 +92,8 @@ cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 %pear_package_install
 cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
+sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
+echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %clean
 rm -rf $RPM_BUILD_ROOT
