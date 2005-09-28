@@ -172,7 +172,7 @@
  		} else {
  			$info['doc_files'] = '';
  		}
-+		$info['have_tests'] = (count($info['test_files']) > 0) + 0;
++		$info['have_tests'] = (strlen($info['test_files']) > 0) + 0;
  
          if ($srcfiles > 0) {
              require_once 'OS/Guess.php';
