@@ -72,3 +72,62 @@
                      }
                  }
              }
+--- .//usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:25:11.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-09-28 23:39:21.000000000 +0300
+@@ -814,7 +814,7 @@
+         }
+ 
+         $info['extra_headers'] = '';
+-        $info['doc_files'] = '';
++        $info['doc_files'] = array();
+         $info['files'] = '';
+         $info['package2xml'] = '';
+         $info['rpm_package'] = sprintf($rpm_pkgname_format, $pf->getPackage());
+@@ -825,7 +825,7 @@
+             }
+             $name = preg_replace('![/:\\\\]!', '/', $name);
+             if ($attr['role'] == 'doc') {
+-                $info['doc_files'] .= " $name";
++                $info['doc_files'][] = $name;
+             // Map role to the rpm vars
+             } else {
+                 $c_prefix = '%{_libdir}/php/pear';
+@@ -863,6 +863,16 @@
+                 $info['files'] .= "$prefix/$name\n";
+             }
+         }
++
++		$ndocs = count($info['doc_files']);
++		if ($ndocs > 1) {
++			$info['doc_files'] = '%doc docs/%{_pearname}/{' . join(',', $info['doc_files']) . '}';
++		} elseif ($ndocs > 0) {
++			$info['doc_files'] = '%doc docs/%{_pearname}/' . join(',', $info['doc_files']);
++		} else {
++			$info['doc_files'] = '';
++		}
++
+         if ($srcfiles > 0) {
+             require_once 'OS/Guess.php';
+             $os = new OS_Guess;
+@@ -894,10 +904,13 @@
+ 			$info['subclass'] = '%{nil}';
+ 		}
+         if ($pf->getDeps()) {
++			$info['optional'] = '';
++
+             if ($pf->getPackagexmlVersion() == '1.0') {
+                 $requires = $conflicts = array();
+                 foreach ($pf->getDeps() as $dep) {
+                     if (isset($dep['optional']) && $dep['optional'] == 'yes') {
++						$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
+                         continue;
+                     }
+                     if ($dep['type'] != 'pkg') {
+@@ -1020,6 +1033,7 @@
+ 
+         // remove the trailing newline
+         $info['extra_headers'] = trim($info['extra_headers']);
++        $info['optional'] = trim($info['optional']);
+         if (function_exists('file_get_contents')) {
+             fclose($fp);
+             $spec_contents = preg_replace('/@([a-z0-9_-]+)@/e', '$info["\1"]',
