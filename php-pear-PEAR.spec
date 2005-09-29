@@ -2,13 +2,12 @@
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
-%define		_noautoreq	'pear(PEAR/FTP.php)'
 
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.1
-Release:	1.4
+Release:	1.9
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -31,6 +30,8 @@ Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)'
 
 %description
 The PEAR package contains:
