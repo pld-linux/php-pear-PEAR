@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.1
-Release:	2.7
+Release:	2.8
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -32,11 +32,6 @@ Requires:	php-pear-XML_RPC >= 1.4.0
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
-Conflicts:	php-pear-Archive_Tar = 1.3.0
-Conflicts:	php-pear-PEAR_Frontend_Web <= 0.5.0
-Conflicts:	php-pear-PEAR_Frontend_Web = 0.5.0
-Conflicts:	php-pear-PEAR_Frontend_Gtk <= 0.4.0
-Conflicts:	php-pear-PEAR_Frontend_Gtk = 0.4.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
