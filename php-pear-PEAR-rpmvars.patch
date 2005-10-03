@@ -333,3 +333,16 @@
  						'php-pear-PEAR' => 1,
  					);
  
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-03 23:35:27.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-03 23:39:42.000000000 +0300
+@@ -917,8 +917,9 @@
+ 		if (empty($info['subclass'])) {
+ 			$info['subclass'] = '%{nil}';
+ 		}
++
++		$info['optional'] = '';
+         if ($pf->getDeps()) {
+-			$info['optional'] = '';
+ 
+             if ($pf->getPackagexmlVersion() == '1.0') {
+                 $requires = $conflicts = array();
