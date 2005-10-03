@@ -221,3 +221,79 @@
  				}
  				if ($attr['role'] == 'test') {
  					$info['test_files'] .= "$prefix/$name\n";
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-03 11:51:26.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-03 11:52:32.000000000 +0300
+@@ -927,15 +927,25 @@
+ 						$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
+                         continue;
+                     }
+-                    if ($dep['type'] != 'pkg') {
++
++					// PHP engine
++                    if ($dep['type'] == 'php') {
++                        $package = 'php';
++
++					// PHP Extension
++                    } elseif ($dep['type'] == 'ext') {
++                        $package = 'php-' . $dep['name'];
++
++                    } elseif ($dep['type'] != 'pkg') {
+                         continue;
+-                    }
+-                    if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
+-                          $dep['channel'] != 'pecl.php.net') {
+-                        $chan = &$reg->getChannel($dep['channel']);
+-                        $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
+-                    } else {
+-                        $package = 'php-pear-' . $dep['name'];
++
++						if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
++							  $dep['channel'] != 'pecl.php.net') {
++							$chan = &$reg->getChannel($dep['channel']);
++							$package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
++						} else {
++							$package = 'php-pear-' . $dep['name'];
++						}
+                     }
+                     $trans = array(
+                         '>' => '>',
+@@ -949,14 +959,23 @@
+                         'le' => '<=',
+                         'eq' => '=',
+                     );
++
++					// known rpm epoches
++					$epoches = array(
++						'php' => 3,
++						'php-pear-PEAR' => 1,
++					);
++
+                     if ($dep['rel'] == 'has') {
+                         $requires[] = $package;
+                     } elseif ($dep['rel'] == 'not') {
+                         $conflicts[] = $package;
+                     } elseif ($dep['rel'] == 'ne') {
++						$epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
+                         $conflicts[] = $package . ' = ' . $dep['version'];
+                     } elseif (isset($trans[$dep['rel']])) {
+-                        $requires[] = $package . ' ' . $trans[$dep['rel']] . ' ' . $dep['version'];
++						$epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
++                        $requires[] = $package . ' ' . $trans[$dep['rel']] . ' ' . $epoch . $dep['version'];
+                     }
+                 }
+                 if (count($requires)) {
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-03 11:53:24.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-03 12:01:13.000000000 +0300
+@@ -936,8 +936,10 @@
+                     } elseif ($dep['type'] == 'ext') {
+                         $package = 'php-' . $dep['name'];
+ 
+-                    } elseif ($dep['type'] != 'pkg') {
+-                        continue;
++                    } else {
++						if ($dep['type'] != 'pkg') {
++							continue;
++						}
+ 
+ 						if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
+ 							  $dep['channel'] != 'pecl.php.net') {
