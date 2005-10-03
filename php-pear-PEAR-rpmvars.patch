@@ -297,3 +297,19 @@
  
  						if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
  							  $dep['channel'] != 'pecl.php.net') {
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-03 12:01:39.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-03 23:04:41.000000000 +0300
+@@ -946,7 +946,12 @@
+ 							$chan = &$reg->getChannel($dep['channel']);
+ 							$package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
+ 						} else {
+-							$package = 'php-pear-' . $dep['name'];
++							// assume lowercased package name as pecl
++							if (strtolower($dep['name']) == $dep['name']) {
++								$package = 'php-pecl-' . $dep['name'];
++							} else {
++								$package = 'php-pear-' . $dep['name'];
++							}
+ 						}
+                     }
+                     $trans = array(
