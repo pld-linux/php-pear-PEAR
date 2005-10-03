@@ -313,3 +313,23 @@
  						}
                      }
                      $trans = array(
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-03 23:05:24.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-03 23:34:48.000000000 +0300
+@@ -930,7 +930,7 @@
+ 
+ 					// PHP engine
+                     if ($dep['type'] == 'php') {
+-                        $package = 'php';
++                        $package = 'php-common';
+ 
+ 					// PHP Extension
+                     } elseif ($dep['type'] == 'ext') {
+@@ -969,7 +969,7 @@
+ 
+ 					// known rpm epoches
+ 					$epoches = array(
+-						'php' => 3,
++						'php-common' => 3,
+ 						'php-pear-PEAR' => 1,
+ 					);
+ 
