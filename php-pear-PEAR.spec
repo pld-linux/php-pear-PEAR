@@ -31,6 +31,9 @@ Requires:	php-pear-XML_RPC >= 1.4.0
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
+Conflicts:	php-pear-Archive_Tar = 1.3.0
+Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
+Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
