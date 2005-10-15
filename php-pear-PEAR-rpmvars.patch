@@ -342,3 +342,49 @@
  
              if ($pf->getPackagexmlVersion() == '1.0') {
                  $requires = $conflicts = array();
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-10-15 16:42:42.000000000 +0300
++++ /usr/share/pear/PEAR/Command/Package.php	2005-10-15 16:43:05.000000000 +0300
+@@ -919,13 +919,20 @@
+ 		}
+ 
+ 		$info['optional'] = '';
++		$info['optional-pkg'] = array();
++		$info['optional-ext'] = array();
+         if ($pf->getDeps()) {
+ 
+             if ($pf->getPackagexmlVersion() == '1.0') {
+                 $requires = $conflicts = array();
+                 foreach ($pf->getDeps() as $dep) {
+                     if (isset($dep['optional']) && $dep['optional'] == 'yes') {
+-						$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++						if ($dep['type'] == 'ext') {
++							$info['optional-ext'][] = 'php-' . $dep['name'];
++						} else {
++							$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++							$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++						}
+                         continue;
+                     }
+ 
+@@ -1134,6 +1141,21 @@
+         $info['optional'] = trim($info['optional']);
+ 		$info['have_optional_deps'] = (strlen($info['optional']) > 0) + 0;
+ 
++		$tmp = $info['optional-pkg'];
++		$info['optional-pkg'] = '';
++		if (count($tmp)) {
++			foreach ($tmp as $dep) {
++				$info['optional-pkg'] .= "Optional-pkg:\t" . $dep . "\n";
++			}
++		}
++		$tmp = $info['optional-ext'];
++		$info['optional-ext'] = '';
++		if (count($tmp)) {
++			foreach ($tmp as $dep) {
++				$info['optional-ext'] .= "Optional-ext:\t" . $dep . "\n";
++			}
++		}
++
+         if (function_exists('file_get_contents')) {
+             fclose($fp);
+             $spec_contents = preg_replace('/@([a-z0-9_-]+)@/e', '$info["\1"]',
