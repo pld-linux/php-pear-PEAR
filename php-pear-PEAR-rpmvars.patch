@@ -188,7 +188,7 @@
                          $info['package2xml'] = '';
                          // this doesn't have a package.xml version 1.0
 -                        $requires[] = 'PEAR::PEAR >= ' .
-+                        $requires[] = 'php-pear-PEAR >= 1' .
++                        $requires[] = 'php-pear-PEAR >= 1:' .
                              $deps['required']['pearinstaller']['min'];
                      }
                      if (count($requires)) {
