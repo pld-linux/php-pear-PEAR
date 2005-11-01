@@ -21,6 +21,7 @@ Patch3:		%{name}-rpmvars.patch
 Patch5:		%{name}-cli.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
+BuildRequries:	php(program)
 BuildRequires:	php-pear >= 4:1.0-6
 Requires:	php-cli
 Requires:	php-pcre
