@@ -390,15 +390,6 @@
              $spec_contents = preg_replace('/@([a-z0-9_-]+)@/e', '$info["\1"]',
 --- ./usr/share/pear/PEAR/Command/Package.php	2005-10-26 18:50:48.000000000 +0300
 +++ /usr/share/pear/PEAR/Command/Package.php	2005-10-26 18:47:32.000000000 +0300
-@@ -1067,7 +1067,7 @@
-                                     for ($i = 0; $i < count($dep['exclude']) - 1; $i++) {
-                                         $newdeprange[] = '(' .
-                                             $package . " {$lastmin[1]} {$lastmin[0]} and " .
--                                            $package . ' < ' . $dep[exclude][$i] . ')';
-+                                            $package . ' < ' . $dep['exclude'][$i] . ')';
-                                         $lastmin = array($dep['exclude'][$i], '>');
-                                     }
-                                     if (isset($dep['max'])) {
 @@ -1120,7 +1120,7 @@
                          $info['package2xml'] = '';
                          // this doesn't have a package.xml version 1.0
