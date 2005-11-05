@@ -1,0 +1,5 @@
+- php-cli is sufficent
+- be backward/forward compatible as php(program) is just virtual to
+  keep the Obsoletes/Provides proper between php4/php5, ie don't use
+  it in Requires lines (use /usr/bin/php instead if need the binary),
+  as PEAR detects php itself (now)
