@@ -75,15 +75,24 @@ Ta klasa ma w PEAR status: %{_status}.
 
 %package core
 Summary:	PEAR core classes
+Summary(pl):	G³ówne klasy PEAR-a
 Group:		Development/Languages/PHP
 
 %description core
-This package incldues PEAR core classes:
+This package includes PEAR core classes:
 - PEAR class and PEAR_Error
 - System
 - OS_Guess
 and classes for PHP 5:
 - PEAR_ErrorStack and PEAR_Exception
+
+%description core -l pl
+Ten pakiet zawiera g³ówne klasy PEAR-a:
+- klasê PEAR i PEAR_Error
+- System
+- OS_Gueass
+oraz klasy dla PHP 5:
+- PEAR_ErrorStack i PEAR_Exception
 
 %prep
 %pear_package_setup
