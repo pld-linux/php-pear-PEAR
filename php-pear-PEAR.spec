@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.4
-Release:	2
+Release:	2.4
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -31,6 +31,7 @@ Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
 Requires:	php-xml
 Requires:	php-zlib
+Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
@@ -71,6 +72,18 @@ Pakiet PEAR zawiara:
 - podstawow± klasy PEAR.
 
 Ta klasa ma w PEAR status: %{_status}.
+
+%package core
+Summary:	PEAR core classes
+Group:		Development/Languages/PHP
+
+%description core
+This package incldues PEAR core classes:
+- PEAR class and PEAR_Error
+- System
+- OS_Guess
+and classes for PHP 5:
+- PEAR_ErrorStack and PEAR_Exception
 
 %prep
 %pear_package_setup
@@ -113,8 +126,21 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
-%{php_pear_dir}/*.php
-%{php_pear_dir}/OS
-%{php_pear_dir}/PEAR/*
+%{php_pear_dir}/pearcmd.php
+%{php_pear_dir}/peclcmd.php
+%{php_pear_dir}/PEAR/[!CE]*
+%{php_pear_dir}/PEAR/ChannelFile*
+%{php_pear_dir}/PEAR/Command*
+%{php_pear_dir}/PEAR/Config.php
+%{php_pear_dir}/PEAR/Common.php
 
 %{php_pear_dir}/data/*
+
+%files core
+%defattr(644,root,root,755)
+%{php_pear_dir}/PEAR.php
+%{php_pear_dir}/System.php
+%{php_pear_dir}/OS
+%dir %{php_pear_dir}/PEAR
+%{php_pear_dir}/PEAR/ErrorStack.php
+%{php_pear_dir}/PEAR/Exception.php
