@@ -6,19 +6,20 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.4
-Release:	3
+Version:	1.4.5
+Release:	1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	20c5d38b16b364bbf5395e6890f048e4
+# Source0-md5:	be4300609e4d966a6d68d6ec95942180
 Source1:	%{name}-template.spec
 Patch0:		%{name}-memory.patch
 Patch1:		%{name}-sysconfdir.patch
 Patch2:		%{name}-rpmpkgname.patch
 Patch3:		%{name}-rpmvars.patch
-Patch5:		%{name}-cli.patch
+Patch4:		%{name}-cli.patch
+Patch5:		%{name}-old-api.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	php-cli
@@ -100,6 +101,7 @@ oraz klasy dla PHP 5:
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 %patch5 -p1
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
