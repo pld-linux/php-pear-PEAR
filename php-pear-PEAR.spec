@@ -7,24 +7,23 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.5
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
 # Source0-md5:	be4300609e4d966a6d68d6ec95942180
 Source1:	%{name}-template.spec
-Patch0:		%{name}-memory.patch
-Patch1:		%{name}-sysconfdir.patch
-Patch2:		%{name}-rpmpkgname.patch
-Patch3:		%{name}-rpmvars.patch
-Patch4:		%{name}-cli.patch
-Patch5:		%{name}-old-api.patch
+Patch0:		%{name}-sysconfdir.patch
+Patch1:		%{name}-rpmpkgname.patch
+Patch2:		%{name}-rpmvars.patch
+Patch3:		%{name}-old-api.patch
 URL:		http://pear.php.net/package/PEAR
-BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	php-cli
 BuildRequires:	php-pear >= 4:1.0-6
-Requires:	php-cli
+BuildRequires:	rpm-php-pearprov >= 4.4.2-11
+Requires:	%{name}-core = %{epoch}:%{version}-%{release}
+Requires:	/usr/bin/php
 Requires:	php-pcre
 Requires:	php-pear >= 4:1.0-5.5
 Requires:	php-pear-Archive_Tar >= 1.1
@@ -32,7 +31,6 @@ Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
 Requires:	php-xml
 Requires:	php-zlib
-Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
@@ -97,12 +95,10 @@ oraz klasy dla PHP 5:
 
 %prep
 %pear_package_setup
-%patch0 -p2
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -123,7 +119,23 @@ pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
-install ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
+
+# -C and -q options were for php-cgi, in php-cli they're enabled by default.
+%define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
+cat > $RPM_BUILD_ROOT%{_bindir}/pear <<'EOF'
+#!/bin/sh
+%php_exec -dmemory_limit=24M %{php_pear_dir}/pearcmd.php "$@"
+EOF
+cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
+#!/bin/sh
+%php_exec -dmemory_limit=-1 %{php_pear_dir}/pearcmd.php "$@"
+EOF
+# This -dextension=pcre.so works with php-5.1, and patched php-cli >= 4:5.0.5-18.1, php4-cli >= 3:4.4.1-6.1
+# -n is there because devs on #pear said this avoids locking problems when replacing in use libraries.
+cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
+#!/bin/sh
+%php_exec -dmemory_limit=24M -dsafe_mode=0 -n -dextension=pcre.so -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
+EOF
 
 sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
