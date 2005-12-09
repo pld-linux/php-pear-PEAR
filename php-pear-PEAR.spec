@@ -123,7 +123,7 @@ pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
-cp -a ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
+install ./%{_bindir}/* $RPM_BUILD_ROOT%{_bindir}
 
 sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
