@@ -136,6 +136,8 @@ cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 #!/bin/sh
 %php_exec -dmemory_limit=24M -dsafe_mode=0 -n -dextension=pcre.so -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
 EOF
+# for rpm to find interpreter
+chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 
 sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
