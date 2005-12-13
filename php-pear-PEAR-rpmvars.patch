@@ -399,3 +399,26 @@
                      }
                      if (count($requires)) {
  						foreach ($requires as $dep) {
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-12-10 02:02:11.000000000 +0200
++++ /usr/share/pear/PEAR/Command/Package.php	2005-12-13 01:44:56.000000000 +0200
+@@ -1133,6 +1135,20 @@
+ 						}
+                     }
+                 }
++
++                if (isset($deps['optional']['package'])) {
++					$a = $deps['optional']['package'];
++					foreach ((isset($a[0]) ? $a : array($a)) as $dep) {
++						$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++						$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++					}
++				}
++                if (isset($deps['optional']['extension'])) {
++					$a = $deps['optional']['extension'];
++					foreach (isset($a[0]) ? $a : array($a) as $dep) {
++						$info['optional-ext'][] = 'php-' . $dep['name'];
++					}
++				}
+             }
+         }
+ 
