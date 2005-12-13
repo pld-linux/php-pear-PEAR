@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.5
-Release:	2
+Release:	3
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -40,7 +40,7 @@ Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)'
+%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)'
 
 %description
 The PEAR package contains:
@@ -142,12 +142,17 @@ chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
+%post
+if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
+	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
+fi
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc install.log
+%doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
 %{php_pear_dir}/.registry/*.reg
