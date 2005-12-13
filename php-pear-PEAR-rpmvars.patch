@@ -422,3 +422,30 @@
              }
          }
  
+--- ./usr/share/pear/PEAR/Command/Package.php	2005-12-13 01:47:22.000000000 +0200
++++ /usr/share/pear/PEAR/Command/Package.php	2005-12-13 12:47:21.000000000 +0200
+@@ -913,7 +913,7 @@
+         $info['version'] = $pf->getVersion();
+         $info['release_license'] = $pf->getLicense();
+         $info['release_state'] = $pf->getState();
+-		list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
++		@list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
+ 		if (empty($info['subclass'])) {
+ 			$info['subclass'] = '%{nil}';
+ 		}
+@@ -930,8 +930,13 @@
+ 						if ($dep['type'] == 'ext') {
+ 							$info['optional-ext'][] = 'php-' . $dep['name'];
+ 						} else {
+-							$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
+-							$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++							if ($dep['type'] == 'php') {
++								# this doesn't make much sense, so ignore
++								#$info['optional-php'][] = 'php-common';
++							} else {
++								$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++								$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++							}
+ 						}
+                         continue;
+                     }
