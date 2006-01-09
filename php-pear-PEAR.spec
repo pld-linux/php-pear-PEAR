@@ -6,13 +6,13 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.5
-Release:	4
+Version:	1.4.6
+Release:	1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	be4300609e4d966a6d68d6ec95942180
+# Source0-md5:	0ef3f7a2b095c290e1915d99048b7644
 Source1:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
@@ -35,6 +35,7 @@ Requires:	php-zlib
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
+#Suggests:	php-pear-Net_FTP
 Conflicts:	php-pear-Archive_Tar = 1.3.0
 Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
@@ -111,7 +112,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=$(pwd)
 pearcmd() {
-	php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
+	php -doutput_buffering=1 -dinclude_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
 }
 pearcmd config-set doc_dir %{_docdir} || exit
 pearcmd config-set data_dir %{php_pear_dir}/data || exit
