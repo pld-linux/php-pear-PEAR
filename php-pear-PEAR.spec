@@ -1,3 +1,6 @@
+# TODO
+# - FHS fix for .channels info
+#
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
 %define		_status		stable
@@ -6,13 +9,13 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.6
+Version:	1.4.7
 Release:	1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	0ef3f7a2b095c290e1915d99048b7644
+# Source0-md5:	d93a15102c007aa3d30f2c9018fb9981
 Source1:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
@@ -37,12 +40,13 @@ Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
 #Suggests:	php-pear-Net_FTP
 Conflicts:	php-pear-Archive_Tar = 1.3.0
-Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
+Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)'
+# PEAR_Command_Packaging is separate package
+%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
 
 %description
 The PEAR package contains:
@@ -123,6 +127,10 @@ cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
 
+cp -a ./%{php_pear_dir}/.channels $RPM_BUILD_ROOT%{php_pear_dir}/.channels
+cp -a ./%{php_pear_dir}/.registry/.channel* $RPM_BUILD_ROOT%{php_pear_dir}/.registry
+cp -a ./%{php_pear_dir}/.depdb* $RPM_BUILD_ROOT%{php_pear_dir}
+
 # -C and -q options were for php-cgi, in php-cli they're enabled by default.
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
 cat > $RPM_BUILD_ROOT%{_bindir}/pear <<'EOF'
@@ -168,6 +176,19 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/PEAR/Common.php
 
 %{php_pear_dir}/data/*
+
+# FIXME: FHS
+%ghost %dir %{php_pear_dir}/.channels
+%ghost %dir %{php_pear_dir}/.channels/.alias
+%ghost %{php_pear_dir}/.channels/.alias/pear.txt
+%ghost %{php_pear_dir}/.channels/.alias/pecl.txt
+%ghost %{php_pear_dir}/.channels/pear.php.net.reg
+%ghost %{php_pear_dir}/.channels/pecl.php.net.reg
+%ghost %{php_pear_dir}/.channels/__uri.reg
+%ghost %{php_pear_dir}/.registry/.channel.__uri
+%ghost %{php_pear_dir}/.registry/.channel.pecl.php.net
+%ghost %{php_pear_dir}/.depdblock
+%ghost %{php_pear_dir}/.depdb
 
 %files core
 %defattr(644,root,root,755)
