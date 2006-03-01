@@ -135,11 +135,11 @@ cp -a ./%{php_pear_dir}/.depdb* $RPM_BUILD_ROOT%{php_pear_dir}
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
 cat > $RPM_BUILD_ROOT%{_bindir}/pear <<'EOF'
 #!/bin/sh
-%php_exec -dmemory_limit=24M %{php_pear_dir}/pearcmd.php "$@"
+%php_exec -dopen_basedir="" -dmemory_limit=24M %{php_pear_dir}/pearcmd.php "$@"
 EOF
 cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
 #!/bin/sh
-%php_exec -dmemory_limit=-1 %{php_pear_dir}/pearcmd.php "$@"
+%php_exec -dopen_basedir="" -dmemory_limit=-1 %{php_pear_dir}/pearcmd.php "$@"
 EOF
 # This -dextension=pcre.so works with php-5.1, and patched php-cli >= 4:5.0.5-18.1, php4-cli >= 3:4.4.1-6.1
 # -n is there because devs on #pear said this avoids locking problems when replacing in use libraries.
