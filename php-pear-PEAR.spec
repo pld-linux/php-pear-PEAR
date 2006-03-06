@@ -1,19 +1,26 @@
+#
+# Conditional build:
+%bcond_with	bootstrap		# bootstrapping - don't require rpm-php-pearprov  to build
+#
 %include	/usr/lib/rpm/macros.php
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
-
+#
+%define	_rel 0.5
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.8
-Release:	0.4
+Release:	%{?with_bootstrap:bootstrap.}%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
 # Source0-md5:	4d29453e1926f11e05b7cfbf4ab085e7
-Source1:	%{name}-template.spec
+Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
+# Source2-md5:	8f9ec8253c04350bc01ee7ca941e24b6
+Source2:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
 Patch2:		%{name}-rpmvars.patch
@@ -23,7 +30,7 @@ Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	php-pear >= 4:1.0-12.3
-BuildRequires:	rpm-php-pearprov >= 4.4.2-11
+%{!?with_bootstrap:BuildRequires:	rpm-php-pearprov >= 4.4.2-11}
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
@@ -46,6 +53,11 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 # PEAR_Command_Packaging is separate package
 %define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
 %define		_statedir	/var/lib/pear
+
+%if %{with bootstrap}
+%define __php_provides %{nil}
+%define __php_requires %{nil}
+%endif
 
 %description
 The PEAR package contains:
@@ -81,6 +93,9 @@ Ta klasa ma w PEAR status: %{_status}.
 Summary:	PEAR core classes
 Summary(pl):	G³ówne klasy PEAR-a
 Group:		Development/Languages/PHP
+%if %{with bootstrap}
+Provides:	pear(PEAR.php)
+%endif
 
 %description core
 This package includes PEAR core classes:
@@ -99,7 +114,21 @@ oraz klasy dla PHP 5:
 - PEAR_ErrorStack i PEAR_Exception
 
 %prep
+%if %{with bootstrap}
+%setup -qc -a1
+(
+	D=$(pwd)
+	cd %{_class}-%{version}
+	mv ../package2.xml .
+	P=$(pwd)
+	C=$(echo ../Console_Getopt-*)
+	%define __pear php -doutput_buffering=1 -dinclude_path="${P}:${C}" ${P}/scripts/pearcmd.php
+	%__pear install --packagingroot=$D --offline --nodeps package2.xml
+) | %__pear_install_log
+%else
 %pear_package_setup
+%endif
+
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -111,7 +140,6 @@ find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=$(pwd)
@@ -153,7 +181,7 @@ EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 
-sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
+sed -e '/^\$''Log: /,$d' %{SOURCE2} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
