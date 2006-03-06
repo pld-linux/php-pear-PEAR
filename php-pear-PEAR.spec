@@ -115,20 +115,12 @@ oraz klasy dla PHP 5:
 
 %prep
 %if %{with bootstrap}
-%setup -qc -a1
-(
-	D=$(pwd)
-	cd %{_class}-%{version}
-	mv ../package2.xml .
-	P=$(pwd)
-	C=$(echo ../Console_Getopt-*)
-	%define __pear php -doutput_buffering=1 -dinclude_path="${P}:${C}" ${P}/scripts/pearcmd.php -c pearrc
-	%__pear install --packagingroot=$D --offline --nodeps package2.xml > ../.install.log
-) || { c=$?; cat .install.log; exit $c; }
-cd ..
-cat .install.log | %__pear_install_log
+P=%{_class}-%{version}
+C=$(basename %{SOURCE1} .tgz)
+%define __pear php -doutput_buffering=1 -dinclude_path=".:../${C}" scripts/pearcmd.php
+%pear_package_setup -z -a1
 %else
-%pear_package_setup
+%pear_package_setup -z
 %endif
 
 %patch0 -p1
