@@ -6,13 +6,13 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.7
-Release:	0.11
+Version:	1.4.8
+Release:	0.1
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	d93a15102c007aa3d30f2c9018fb9981
+# Source0-md5:	4d29453e1926f11e05b7cfbf4ab085e7
 Source1:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
