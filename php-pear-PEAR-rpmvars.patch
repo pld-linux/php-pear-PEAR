@@ -1,6 +1,6 @@
 diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php
---- PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php	2006-03-06 03:21:27.000000000 +0200
-+++ PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php	2006-03-06 03:22:16.000000000 +0200
+--- PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:21:27.000000000 +0200
++++ PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:22:16.000000000 +0200
 @@ -814,8 +814,10 @@
          }
  
@@ -31,30 +31,30 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
                  }
                  $name = str_replace('\\', '/', $name);
 -                $info['files'] .= "$prefix/$name\n";
-+				if (isset($attr['baseinstalldir']) and ($ttrim = trim($attr['baseinstalldir'], '/'))) {
-+					$name = $ttrim . '/' . $name;
-+				}
-+				if ($attr['role'] == 'test') {
-+					$info['test_files'] .= "$prefix/$name\n";
++                if (isset($attr['baseinstalldir']) and ($ttrim = trim($attr['baseinstalldir'], '/'))) {
++                    $name = $ttrim . '/' . $name;
++                }
++                if ($attr['role'] == 'test') {
++                    $info['test_files'] .= "$prefix/$name\n";
 +
-+				} elseif ($attr['role'] == 'data') {
-+					$info['data_files'] .= "$prefix/$name\n";
++                } elseif ($attr['role'] == 'data') {
++                    $info['data_files'] .= "$prefix/$name\n";
 +
-+				} else {
-+					$info['files'] .= "$prefix/$name\n";
-+				}
++                } else {
++                    $info['files'] .= "$prefix/$name\n";
++                }
              }
          }
 +
-+		$ndocs = count($info['doc_files']);
-+		if ($ndocs > 1) {
-+			$info['doc_files'] = '%doc docs/%{_pearname}/{' . join(',', $info['doc_files']) . '}';
-+		} elseif ($ndocs > 0) {
-+			$info['doc_files'] = '%doc docs/%{_pearname}/' . join(',', $info['doc_files']);
-+		} else {
-+			$info['doc_files'] = '';
-+		}
-+		$info['have_tests'] = (strlen($info['test_files']) > 0) + 0;
++        $ndocs = count($info['doc_files']);
++        if ($ndocs > 1) {
++            $info['doc_files'] = '%doc docs/%{_pearname}/{' . join(',', $info['doc_files']) . '}';
++        } elseif ($ndocs > 0) {
++            $info['doc_files'] = '%doc docs/%{_pearname}/' . join(',', $info['doc_files']);
++        } else {
++            $info['doc_files'] = '';
++        }
++        $info['have_tests'] = (strlen($info['test_files']) > 0) + 0;
 +
          if ($srcfiles > 0) {
              require_once 'OS/Guess.php';
@@ -64,31 +64,31 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
          $info['version'] = $pf->getVersion();
          $info['release_license'] = $pf->getLicense();
 +        $info['release_state'] = $pf->getState();
-+		@list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
-+		if (empty($info['subclass'])) {
-+			$info['subclass'] = '%{nil}';
-+		}
++        @list($info['class'], $info['subclass']) = explode('_', $info['package'], 2);
++        if (empty($info['subclass'])) {
++            $info['subclass'] = '%{nil}';
++        }
 +
-+		$info['optional'] = '';
-+		$info['optional-pkg'] = array();
-+		$info['optional-ext'] = array();
++        $info['optional'] = '';
++        $info['optional-pkg'] = array();
++        $info['optional-ext'] = array();
          if ($pf->getDeps()) {
 +
              if ($pf->getPackagexmlVersion() == '1.0') {
                  $requires = $conflicts = array();
                  foreach ($pf->getDeps() as $dep) {
                      if (isset($dep['optional']) && $dep['optional'] == 'yes') {
-+						if ($dep['type'] == 'ext') {
-+							$info['optional-ext'][] = 'php-' . $dep['name'];
-+						} else {
-+							if ($dep['type'] == 'php') {
-+								# this doesn't make much sense, so ignore
-+								#$info['optional-php'][] = 'php-common';
-+							} else {
-+								$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
-+								$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
-+							}
-+						}
++                        if ($dep['type'] == 'ext') {
++                            $info['optional-ext'][] = 'php-' . $dep['name'];
++                        } else {
++                            if ($dep['type'] == 'php') {
++                                # this doesn't make much sense, so ignore
++                                #$info['optional-php'][] = 'php-common';
++                            } else {
++                                $info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++                                $info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++                            }
++                        }
                          continue;
                      }
 -                    if ($dep['type'] != 'pkg') {
@@ -99,32 +99,32 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 -                        $chan = &$reg->getChannel($dep['channel']);
 -                        $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
 +
-+					// PHP engine
++                    // PHP engine
 +                    if ($dep['type'] == 'php') {
 +                        $package = 'php-common';
 +
-+					// PHP Extension
++                    // PHP Extension
 +                    } elseif ($dep['type'] == 'ext') {
 +                        $package = 'php-' . $dep['name'];
 +
                      } else {
 -                        $package = 'PEAR::' . $dep['name'];
-+						if ($dep['type'] != 'pkg') {
-+							continue;
-+						}
++                        if ($dep['type'] != 'pkg') {
++                            continue;
++                        }
 +
-+						if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
-+							  $dep['channel'] != 'pecl.php.net') {
-+							$chan = &$reg->getChannel($dep['channel']);
-+							$package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
-+						} else {
-+							// assume lowercased package name as pecl
-+							if (strtolower($dep['name']) == $dep['name']) {
-+								$package = 'php-pecl-' . $dep['name'];
-+							} else {
-+								$package = 'php-pear-' . $dep['name'];
-+							}
-+						}
++                        if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
++                              $dep['channel'] != 'pecl.php.net') {
++                            $chan = &$reg->getChannel($dep['channel']);
++                            $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
++                        } else {
++                            // assume lowercased package name as pecl
++                            if (strtolower($dep['name']) == $dep['name']) {
++                                $package = 'php-pecl-' . $dep['name'];
++                            } else {
++                                $package = 'php-pear-' . $dep['name'];
++                            }
++                        }
                      }
                      $trans = array(
                          '>' => '>',
@@ -133,36 +133,36 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
                          'eq' => '=',
                      );
 +
-+					// known rpm epoches
-+					$epoches = array(
-+						'php-common' => 3,
-+						'php-pear-PEAR' => 1,
-+					);
++                    // known rpm epoches
++                    $epoches = array(
++                        'php-common' => 3,
++                        'php-pear-PEAR' => 1,
++                    );
 +
                      if ($dep['rel'] == 'has') {
                          $requires[] = $package;
                      } elseif ($dep['rel'] == 'not') {
                          $conflicts[] = $package;
                      } elseif ($dep['rel'] == 'ne') {
-+						$epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
++                        $epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
                          $conflicts[] = $package . ' = ' . $dep['version'];
                      } elseif (isset($trans[$dep['rel']])) {
 -                        $requires[] = $package . ' ' . $trans[$dep['rel']] . ' ' . $dep['version'];
-+						$epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
++                        $epoch = isset($epoches[$package]) ? ($epoches[$package] . ':') : '';
 +                        $requires[] = $package . ' ' . $trans[$dep['rel']] . ' ' . $epoch . $dep['version'];
                      }
                  }
                  if (count($requires)) {
 -                    $info['extra_headers'] .= 'Requires: ' . implode(', ', $requires) . "\n";
-+					foreach ($requires as $dep) {
-+						$info['extra_headers'] .= "Requires:\t" . $dep . "\n";
-+					}
++                    foreach ($requires as $dep) {
++                        $info['extra_headers'] .= "Requires:\t" . $dep . "\n";
++                    }
                  }
                  if (count($conflicts)) {
 -                    $info['extra_headers'] .= 'Conflicts: ' . implode(', ', $conflicts) . "\n";
-+					foreach ($conflicts as $dep) {
-+						$info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
-+					}
++                    foreach ($conflicts as $dep) {
++                        $info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
++                    }
                  }
              } else {
                  $info['package2xml'] = '2'; // tell the spec to use package2.xml
@@ -186,53 +186,53 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
                      }
                      if (count($requires)) {
 -                        $info['extra_headers'] .= 'Requires: ' . implode(', ', $requires) . "\n";
-+						foreach ($requires as $dep) {
-+							$info['extra_headers'] .= "Requires:\t" . $dep . "\n";
-+						}
++                        foreach ($requires as $dep) {
++                            $info['extra_headers'] .= "Requires:\t" . $dep . "\n";
++                        }
                      }
                      if (count($conflicts)) {
 -                        $info['extra_headers'] .= 'Conflicts: ' . implode(', ', $conflicts) . "\n";
-+						foreach ($conflicts as $dep) {
-+							$info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
-+						}
++                        foreach ($conflicts as $dep) {
++                            $info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
++                        }
                      }
                  }
 +
 +                if (isset($deps['optional']['package'])) {
-+					$a = $deps['optional']['package'];
-+					foreach ((isset($a[0]) ? $a : array($a)) as $dep) {
-+						$info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
-+						$info['optional-pkg'][] = 'php-pear-'. $dep['name'];
-+					}
-+				}
++                    $a = $deps['optional']['package'];
++                    foreach ((isset($a[0]) ? $a : array($a)) as $dep) {
++                        $info['optional'] .= "'pear(". str_replace('_', '/', $dep['name']) . ".*)' ";
++                        $info['optional-pkg'][] = 'php-pear-'. $dep['name'];
++                    }
++                }
 +                if (isset($deps['optional']['extension'])) {
-+					$a = $deps['optional']['extension'];
-+					foreach (isset($a[0]) ? $a : array($a) as $dep) {
-+						$info['optional-ext'][] = 'php-' . $dep['name'];
-+					}
-+				}
++                    $a = $deps['optional']['extension'];
++                    foreach (isset($a[0]) ? $a : array($a) as $dep) {
++                        $info['optional-ext'][] = 'php-' . $dep['name'];
++                    }
++                }
              }
          }
  
          // remove the trailing newline
          $info['extra_headers'] = trim($info['extra_headers']);
 +        $info['optional'] = trim($info['optional']);
-+		$info['have_optional_deps'] = (strlen($info['optional']) > 0) + 0;
++        $info['have_optional_deps'] = (strlen($info['optional']) > 0) + 0;
 +
-+		$tmp = $info['optional-pkg'];
-+		$info['optional-pkg'] = '';
-+		if (count($tmp)) {
-+			foreach ($tmp as $dep) {
-+				$info['optional-pkg'] .= "Optional-pkg:\t" . $dep . "\n";
-+			}
-+		}
-+		$tmp = $info['optional-ext'];
-+		$info['optional-ext'] = '';
-+		if (count($tmp)) {
-+			foreach ($tmp as $dep) {
-+				$info['optional-ext'] .= "Optional-ext:\t" . $dep . "\n";
-+			}
-+		}
++        $tmp = $info['optional-pkg'];
++        $info['optional-pkg'] = '';
++        if (count($tmp)) {
++            foreach ($tmp as $dep) {
++                $info['optional-pkg'] .= "Optional-pkg:\t" . $dep . "\n";
++            }
++        }
++        $tmp = $info['optional-ext'];
++        $info['optional-ext'] = '';
++        if (count($tmp)) {
++            foreach ($tmp as $dep) {
++                $info['optional-ext'] .= "Optional-ext:\t" . $dep . "\n";
++            }
++        }
 +
          if (function_exists('file_get_contents')) {
              fclose($fp);
