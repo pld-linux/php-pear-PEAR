@@ -1,6 +1,6 @@
-diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php
---- PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:21:27.000000000 +0200
-+++ PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:22:16.000000000 +0200
+diff -u PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:22:16.000000000 +0200 PEAR-1.4.8/usr/share/pear/PEAR/Command/Package.php
+--- PEAR-1.4.6/usr/share/pear/PEAR/Command/Package.php    2006-03-06 03:22:16.000000000 +0200
++++ PEAR-1.4.8/usr/share/pear/PEAR/Command/Package.php	2006-03-06 03:30:37.000000000 +0200
 @@ -814,8 +814,10 @@
          }
  
@@ -59,7 +59,7 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
          if ($srcfiles > 0) {
              require_once 'OS/Guess.php';
              $os = new OS_Guess;
-@@ -888,22 +912,60 @@
+@@ -913,26 +937,61 @@
          $info['package'] = $pf->getPackage();
          $info['version'] = $pf->getVersion();
          $info['release_license'] = $pf->getLicense();
@@ -73,7 +73,6 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 +        $info['optional-pkg'] = array();
 +        $info['optional-ext'] = array();
          if ($pf->getDeps()) {
-+
              if ($pf->getPackagexmlVersion() == '1.0') {
                  $requires = $conflicts = array();
                  foreach ($pf->getDeps() as $dep) {
@@ -97,6 +96,9 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 -                    if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
 -                          $dep['channel'] != 'pecl.php.net') {
 -                        $chan = &$reg->getChannel($dep['channel']);
+-                        if (PEAR::isError($chan)) {
+-                            return $this->raiseError($chan);
+-                        }
 -                        $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
 +
 +                    // PHP engine
@@ -114,7 +116,7 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 +                        }
 +
 +                        if (isset($dep['channel']) && $dep['channel'] != 'pear.php.net' &&
-+                              $dep['channel'] != 'pecl.php.net') {
++                            $dep['channel'] != 'pecl.php.net') {
 +                            $chan = &$reg->getChannel($dep['channel']);
 +                            $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
 +                        } else {
@@ -126,9 +128,11 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 +                            }
 +                        }
                      }
++
                      $trans = array(
                          '>' => '>',
-@@ -917,21 +979,34 @@
+                         '<' => '<',
+@@ -955,21 +1014,34 @@
                          'le' => '<=',
                          'eq' => '=',
                      );
@@ -166,7 +170,7 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
                  }
              } else {
                  $info['package2xml'] = '2'; // tell the spec to use package2.xml
-@@ -946,7 +1021,7 @@
+@@ -984,7 +1056,7 @@
                              $chan = &$reg->getChannel($dep['channel']);
                              $package = strtoupper($chan->getAlias()) . '::' . $dep['name'];
                          } else {
@@ -175,7 +179,7 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
                          }
                          if (isset($dep['conflicts']) && (isset($dep['min']) ||
                                isset($dep['max']))) {
-@@ -1049,21 +1124,57 @@
+@@ -1087,14 +1159,32 @@
                      if ($a === null || PEAR::isError($a)) {
                          $info['package2xml'] = '';
                          // this doesn't have a package.xml version 1.0
@@ -195,8 +199,8 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 +                        foreach ($conflicts as $dep) {
 +                            $info['extra_headers'] .= "Conflicts:\t" . $dep . "\n";
 +                        }
-                     }
-                 }
++                    }
++                }
 +
 +                if (isset($deps['optional']['package'])) {
 +                    $a = $deps['optional']['package'];
@@ -209,10 +213,10 @@ diff -u -r PEAR-1.4.6.orig/usr/share/pear/PEAR/Command/Package.php PEAR-1.4.6/us
 +                    $a = $deps['optional']['extension'];
 +                    foreach (isset($a[0]) ? $a : array($a) as $dep) {
 +                        $info['optional-ext'][] = 'php-' . $dep['name'];
-+                    }
-+                }
+                     }
+                 }
              }
-         }
+@@ -1102,6 +1192,24 @@
  
          // remove the trailing newline
          $info['extra_headers'] = trim($info['extra_headers']);
