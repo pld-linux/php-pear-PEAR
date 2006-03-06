@@ -4,7 +4,7 @@
 %define		_pearname	%{_class}
 
 Summary:	PEAR Base System
-Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
+Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.8
 Release:	0.4
