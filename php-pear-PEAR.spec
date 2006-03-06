@@ -7,7 +7,7 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 #
-%define	_rel 0.5
+%define	_rel 0.6
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -19,7 +19,7 @@ Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
 # Source0-md5:	4d29453e1926f11e05b7cfbf4ab085e7
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
-# Source2-md5:	8f9ec8253c04350bc01ee7ca941e24b6
+# Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
 Source2:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
@@ -122,9 +122,11 @@ oraz klasy dla PHP 5:
 	mv ../package2.xml .
 	P=$(pwd)
 	C=$(echo ../Console_Getopt-*)
-	%define __pear php -doutput_buffering=1 -dinclude_path="${P}:${C}" ${P}/scripts/pearcmd.php
-	%__pear install --packagingroot=$D --offline --nodeps package2.xml
-) | %__pear_install_log
+	%define __pear php -doutput_buffering=1 -dinclude_path="${P}:${C}" ${P}/scripts/pearcmd.php -c pearrc
+	%__pear install --packagingroot=$D --offline --nodeps package2.xml > ../.install.log
+) || { c=$?; cat .install.log; exit $c; }
+cd ..
+cat .install.log | %__pear_install_log
 %else
 %pear_package_setup
 %endif
