@@ -7,7 +7,7 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 #
-%define	_rel 0.6
+%define	_rel 0.7
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -120,6 +120,9 @@ C=$(basename %{SOURCE1} .tgz)
 %define __pear php -doutput_buffering=1 -dinclude_path=".:../${C}" scripts/pearcmd.php
 %pear_package_setup -z -a1
 %else
+# always use bundled PEAR, as the 1.4.7+ version can't build if PEAR is present
+# on system. you may call it a hack.
+%define __pear php -doutput_buffering=1 scripts/pearcmd.php
 %pear_package_setup -z
 %endif
 
