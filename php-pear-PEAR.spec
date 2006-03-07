@@ -125,6 +125,12 @@ pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
+install -d $RPM_BUILD_ROOT%{php_pear_dir}/{.registry/.channel.{__uri,pecl.php.net},.channels/.alias}
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.depdb{,lock}
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.channels/{__uri,{pear,pecl}.php.net}.reg
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.channels/.alias/{pear,pecl}.txt
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 
 # -C and -q options were for php-cgi, in php-cli they're enabled by default.
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
@@ -174,6 +180,23 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/PEAR/Common.php
 
 %{php_pear_dir}/data/*
+
+# registry
+%dir %{php_pear_dir}/.registry
+%dir %{php_pear_dir}/.channels
+%dir %{php_pear_dir}/.channels/.alias
+
+%ghost %{php_pear_dir}/.channels/.alias/pear.txt
+%ghost %{php_pear_dir}/.channels/.alias/pecl.txt
+%ghost %{php_pear_dir}/.channels/pear.php.net.reg
+%ghost %{php_pear_dir}/.channels/pecl.php.net.reg
+%ghost %{php_pear_dir}/.channels/__uri.reg
+%ghost %{php_pear_dir}/.registry/.channel.__uri
+%ghost %{php_pear_dir}/.registry/.channel.pecl.php.net
+%ghost %{php_pear_dir}/.depdblock
+%ghost %{php_pear_dir}/.depdb
+%ghost %{php_pear_dir}/.filemap
+%ghost %{php_pear_dir}/.lock
 
 %files core
 %defattr(644,root,root,755)
