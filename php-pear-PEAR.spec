@@ -22,12 +22,12 @@ Patch4:		%{name}-specfile.patch
 Patch5:		%{name}-packagingroot.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
-BuildRequires:	php-pear >= 4:1.0-6
+BuildRequires:	php-pear-PEAR >= 1:1.4.0-0.b1.3
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-5.5
+Requires:	php-pear >= 4:1.0-12.6
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
@@ -38,8 +38,8 @@ Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
 #Suggests:	php-pear-Net_FTP
 Conflicts:	php-pear-Archive_Tar = 1.3.0
-Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
+Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
