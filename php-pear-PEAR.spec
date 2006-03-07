@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.6
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -19,6 +19,7 @@ Patch1:		%{name}-rpmpkgname.patch
 Patch2:		%{name}-rpmvars.patch
 Patch3:		%{name}-old-api.patch
 Patch4:		%{name}-specfile.patch
+Patch5:		%{name}-packagingroot.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	php-pear >= 4:1.0-6
@@ -102,6 +103,8 @@ oraz klasy dla PHP 5:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+cd ./%{php_pear_dir}
+%patch5 -p1
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -146,6 +149,9 @@ sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_cla
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
+if [ ! -f %{php_pear_dir}/.lock ]; then
+	%{_bindir}/pear list > /dev/null
+fi
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
 fi
