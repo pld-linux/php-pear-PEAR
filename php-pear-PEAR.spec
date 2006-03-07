@@ -6,27 +6,28 @@
 Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.5
-Release:	4
+Version:	1.4.6
+Release:	3
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	be4300609e4d966a6d68d6ec95942180
+# Source0-md5:	0ef3f7a2b095c290e1915d99048b7644
 Source1:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		%{name}-rpmpkgname.patch
 Patch2:		%{name}-rpmvars.patch
 Patch3:		%{name}-old-api.patch
 Patch4:		%{name}-specfile.patch
+Patch5:		%{name}-packagingroot.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
-BuildRequires:	php-pear >= 4:1.0-6
+BuildRequires:	php-pear-PEAR >= 1:1.4.0-0.b1.3
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-5.5
+Requires:	php-pear >= 4:1.0-12.6
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
@@ -35,9 +36,10 @@ Requires:	php-zlib
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
+#Suggests:	php-pear-Net_FTP
 Conflicts:	php-pear-Archive_Tar = 1.3.0
-Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
+Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -101,6 +103,8 @@ oraz klasy dla PHP 5:
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+cd ./%{php_pear_dir}
+%patch5 -p1
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -111,7 +115,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=$(pwd)
 pearcmd() {
-	php -d output_buffering=1 -d include_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
+	php -doutput_buffering=1 -dinclude_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
 }
 pearcmd config-set doc_dir %{_docdir} || exit
 pearcmd config-set data_dir %{php_pear_dir}/data || exit
@@ -121,6 +125,12 @@ pearcmd config-set sig_bin %{_bindir}/gpg || exit
 cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
+install -d $RPM_BUILD_ROOT%{php_pear_dir}/{.registry/.channel.{__uri,pecl.php.net},.channels/.alias}
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.depdb{,lock}
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.channels/{__uri,{pear,pecl}.php.net}.reg
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.channels/.alias/{pear,pecl}.txt
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 
 # -C and -q options were for php-cgi, in php-cli they're enabled by default.
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
@@ -145,6 +155,9 @@ sed -e '/^\$''Log: /,$d' %{SOURCE1} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_cla
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
+if [ ! -f %{php_pear_dir}/.lock ]; then
+	%{_bindir}/pear list > /dev/null
+fi
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
 fi
@@ -167,6 +180,23 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/PEAR/Common.php
 
 %{php_pear_dir}/data/*
+
+# registry
+%dir %{php_pear_dir}/.registry
+%dir %{php_pear_dir}/.channels
+%dir %{php_pear_dir}/.channels/.alias
+
+%ghost %{php_pear_dir}/.channels/.alias/pear.txt
+%ghost %{php_pear_dir}/.channels/.alias/pecl.txt
+%ghost %{php_pear_dir}/.channels/pear.php.net.reg
+%ghost %{php_pear_dir}/.channels/pecl.php.net.reg
+%ghost %{php_pear_dir}/.channels/__uri.reg
+%ghost %{php_pear_dir}/.registry/.channel.__uri
+%ghost %{php_pear_dir}/.registry/.channel.pecl.php.net
+%ghost %{php_pear_dir}/.depdblock
+%ghost %{php_pear_dir}/.depdb
+%ghost %{php_pear_dir}/.filemap
+%ghost %{php_pear_dir}/.lock
 
 %files core
 %defattr(644,root,root,755)
