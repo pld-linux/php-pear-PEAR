@@ -7,7 +7,7 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 #
-%define	_rel 0.7
+%define	_rel 0.8
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -220,6 +220,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{php_pear_dir}/data/*
 
+%dir %{_statedir}
 %dir %{_statedir}/channels
 %dir %{_statedir}/registry
 %dir %{_statedir}/channels/.alias
