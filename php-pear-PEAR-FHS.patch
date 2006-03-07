@@ -1,19 +1,13 @@
 --- /usr/share/pear/PEAR/Registry.php~	2006-03-02 01:40:24.000000000 +0200
 +++ /usr/share/pear/PEAR/Registry.php	2006-03-02 01:46:34.000000000 +0200
-@@ -141,12 +141,11 @@
-                            $pecl_channel = false)
-     {
+@@ -143,8 +143,8 @@
          parent::PEAR();
--        $ds = DIRECTORY_SEPARATOR;
+         $ds = DIRECTORY_SEPARATOR;
          $this->install_dir = $pear_install_dir;
 -        $this->channelsdir = $pear_install_dir.$ds.'.channels';
 -        $this->statedir = $pear_install_dir.$ds.'.registry';
--        $this->filemap  = $pear_install_dir.$ds.'.filemap';
--        $this->lockfile = $pear_install_dir.$ds.'.lock';
 +        $this->channelsdir = '/var/lib/pear/channels';
 +        $this->statedir = '/var/lib/pear/registry';
-+        $this->filemap  = '/var/lib/pear/.filemap';
-+        $this->lockfile = '/var/lib/pear/.lock';
+         $this->filemap  = $pear_install_dir.$ds.'.filemap';
+         $this->lockfile = $pear_install_dir.$ds.'.lock';
          $this->_pearChannel = $pear_channel;
-         $this->_peclChannel = $pecl_channel;
-         $this->_config = false;

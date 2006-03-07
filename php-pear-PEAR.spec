@@ -7,7 +7,7 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 #
-%define	_rel 0.8
+%define	_rel 0.14
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -29,13 +29,11 @@ Patch4:		%{name}-specfile.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
-BuildRequires:	php-pear >= 4:1.0-12.3
-BuildRequires:	php-pear-PEAR
 %{!?with_bootstrap:BuildRequires:	rpm-php-pearprov >= 4.4.2-11}
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-5.5
+Requires:	php-pear >= 4:1.0-12.3
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
@@ -157,8 +155,8 @@ install -d $RPM_BUILD_ROOT%{_statedir}/{registry/.channel.{__uri,pecl.php.net},c
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
 touch $RPM_BUILD_ROOT%{_statedir}/channels/{__uri,{pear,pecl}.php.net}.reg
 touch $RPM_BUILD_ROOT%{_statedir}/channels/.alias/{pear,pecl}.txt
-touch $RPM_BUILD_ROOT%{_statedir}/.filemap
-touch $RPM_BUILD_ROOT%{_statedir}/.lock
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
+touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 
 # -C and -q options were for php-cgi, in php-cli they're enabled by default.
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
@@ -183,24 +181,23 @@ sed -e '/^\$''Log: /,$d' %{SOURCE2} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_cla
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
-if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
-	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
-fi
-if [ ! -f %{_statedir}/.lock ]; then
-	umask 2
-	touch %{_statedir}/.lock
-fi
 if [ ! -e %{php_pear_dir}/.registry ]; then
 	ln -s %{_statedir}/registry %{php_pear_dir}/.registry
+fi
+if [ ! -f %{php_pear_dir}/.lock ]; then
+	%{_bindir}/pear list > /dev/null
+fi
+if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
+	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
 fi
 
 %triggerpostun -- %{name} < 1:1.4.7-0.3
 if [ ! -L %{php_pear_dir}/.registry ]; then
 	mv -f %{php_pear_dir}/.registry/*.reg %{_statedir}/registry
+	rmdir %{php_pear_dir}/.registry/* 2>/dev/null
 	rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
 	ln -s %{_statedir}/registry %{php_pear_dir}/.registry
 fi
-rm -f %{php_pear_dir}/.{lock,depdb*,filemap}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -235,8 +232,8 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{_statedir}/registry/.channel.pecl.php.net
 %ghost %{_statedir}/.depdblock
 %ghost %{_statedir}/.depdb
-%ghost %{_statedir}/.filemap
-%ghost %{_statedir}/.lock
+%ghost %{php_pear_dir}/.filemap
+%ghost %{php_pear_dir}/.lock
 
 %files core
 %defattr(644,root,root,755)
