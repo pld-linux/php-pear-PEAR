@@ -7,7 +7,7 @@ Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.9
-Release:	0.25
+Release:	0.26
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -133,8 +133,6 @@ cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 %pear_package_install
 
 install -d $RPM_BUILD_ROOT%{_statedir}/channels/.alias
-mv $RPM_BUILD_ROOT{%{php_pear_dir}/.registry,%{pear_registry}}
-ln -s %{pear_registry} $RPM_BUILD_ROOT%{php_pear_dir}/.registry
 install -d $RPM_BUILD_ROOT%{pear_registry}/{.channel.{__uri,pecl.php.net},channels/.alias}
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
 touch $RPM_BUILD_ROOT%{_statedir}/channels/{__uri,{pear,pecl}.php.net}.reg
@@ -166,10 +164,13 @@ echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
 if [ ! -L %{php_pear_dir}/.registry ]; then
-	mv -f %{php_pear_dir}/.registry/*.reg %{pear_registry}
-	rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
-	rmdir %{php_pear_dir}/.registry/* 2>/dev/null
-	rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
+	if [ -d %{php_pear_dir}/.registry ]; then
+		install -d %{pear_registry}
+		mv -f %{php_pear_dir}/.registry/*.reg %{pear_registry}
+		rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
+		rmdir %{php_pear_dir}/.registry/* 2>/dev/null
+		rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
+	fi
 	ln -s %{pear_registry} %{php_pear_dir}/.registry
 fi
 
@@ -189,8 +190,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
-%dir %{pear_registry}
-%{pear_registry}/*.reg
+%{php_pear_dir}/.registry/pear.reg
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
 %{php_pear_dir}/PEAR/[!CE]*
@@ -203,6 +203,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %{_statedir}
 %dir %{_statedir}/channels
+%dir %{_statedir}/registry
 %dir %{_statedir}/channels/.alias
 
 %ghost %{_statedir}/channels/.alias/pear.txt
@@ -216,7 +217,7 @@ rm -rf $RPM_BUILD_ROOT
 %ghost %{_statedir}/.depdb
 %ghost %{php_pear_dir}/.filemap
 %ghost %{php_pear_dir}/.lock
-%ghost %{php_pear_dir}/.registry
+%ghost %dir %{php_pear_dir}/.registry
 
 %files core
 %defattr(644,root,root,755)
