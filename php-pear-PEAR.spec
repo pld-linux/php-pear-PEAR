@@ -167,7 +167,7 @@ echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 %post
 if [ ! -L %{php_pear_dir}/.registry ]; then
 	mv -f %{php_pear_dir}/.registry/*.reg %{pear_registry}
-	rmdir %{php_pear_dir/.registry/.channel.* 2>/dev/null
+	rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
 	rmdir %{php_pear_dir}/.registry/* 2>/dev/null
 	rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
 	ln -s %{pear_registry} %{php_pear_dir}/.registry
