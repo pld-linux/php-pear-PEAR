@@ -25,6 +25,7 @@ Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
+BuildRequires:	rpmbuild(macros) >= 1.300
 BuildRequires:	package-not-usable
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
