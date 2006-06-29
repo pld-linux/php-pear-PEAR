@@ -33,7 +33,6 @@ Requires:	php-pcre
 Requires:	php-pear >= 4:1.0-12.3
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
-Requires:	php-pear-XML_RPC >= 1.4.0
 Requires:	php-xml
 Requires:	php-zlib
 Obsoletes:	php-pear-PEAR-Command
