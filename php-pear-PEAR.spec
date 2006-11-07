@@ -1,21 +1,22 @@
 # NOTE
 # - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
-%define		_status		stable
+%define		_status		alpha
 %define		_pearname	%{_class}
+%define		_rc			a1
 #
 %include	/usr/lib/rpm/macros.php
 %include	%{_sourcedir}/php-pear-build-macros
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.11
-Release:	0.28
+Version:	1.5.0
+Release:	0.%{_rc}.28
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	1b47f9df911b149d0e9a6630fc9b7da7
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_rc}.tgz
+# Source0-md5:	8f0699f4cf138ac9c6c98a9a9d09133d
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 # Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
 Source2:	%{name}-template.spec
@@ -105,10 +106,10 @@ oraz klasy dla PHP 5:
 - PEAR_ErrorStack i PEAR_Exception
 
 %prep
-%define __build_dir %{_builddir}/%{_class}-%{version}
-%define	__php_include_path %{__build_dir}/%{_class}-%{version}:%{__build_dir}/%(basename %{SOURCE1} .tgz)
-%define __pear php -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}/scripts/pearcmd.php
-%pear_package_setup -z -a1
+%define __build_dir %{_builddir}/%{_class}-%{version}%{?_rc}
+%define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz)
+%define __pear php -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
+%pear_package_setup -z -a1 -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
 %patch1 -p1
