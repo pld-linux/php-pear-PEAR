@@ -7,7 +7,7 @@ Summary:	%{_pearname} - main PHP PEAR class
 Summary(pl):	%{_pearname} - podstawowa klasa dla PHP PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.4.6
-Release:	3
+Release:	4
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -27,7 +27,7 @@ BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-12.6
+Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-XML_RPC >= 1.4.0
@@ -182,7 +182,6 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/data/*
 
 # registry
-%dir %{php_pear_dir}/.registry
 %dir %{php_pear_dir}/.channels
 %dir %{php_pear_dir}/.channels/.alias
 
