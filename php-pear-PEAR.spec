@@ -1,18 +1,21 @@
+# NOTE
+# - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
 #
 %include	/usr/lib/rpm/macros.php
+%include	%{_sourcedir}/php-pear-build-macros
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.9
-Release:	0.27
+Version:	1.4.11
+Release:	0.28
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	52257e23987717c474a3da87f161a272
+# Source0-md5:	1b47f9df911b149d0e9a6630fc9b7da7
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 # Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
 Source2:	%{name}-template.spec
@@ -26,11 +29,11 @@ URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.300
-BuildRequires:	package-not-usable
+%{!?debug:BuildRequires:	package-not-usable}
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-12.3
+Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-xml
