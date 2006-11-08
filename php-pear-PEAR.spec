@@ -11,11 +11,12 @@
 #
 %include	/usr/lib/rpm/macros.php
 %include	%{_sourcedir}/php-pear-build-macros
+%define		_rel	0.28
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.5.0
-Release:	0.%{_rc}.28
+Release:	1.%{_rc}.%{_rel}
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -23,18 +24,12 @@ Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_rc}.tgz
 # Source0-md5:	8f0699f4cf138ac9c6c98a9a9d09133d
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 # Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
-Source2:	%{name}-template.spec
 Patch0:		%{name}-sysconfdir.patch
-Patch1:		%{name}-rpmpkgname.patch
-Patch2:		%{name}-rpmvars.patch
-Patch3:		%{name}-old-api.patch
-Patch4:		%{name}-specfile.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.300
-%{!?debug:BuildRequires:	package-not-usable}
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
@@ -123,11 +118,7 @@ oraz klasy dla PHP 5:
 %pear_package_setup -z -a1 -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
-#%patch4 -p1
-#%patch5 -p1
+%{?with_FHS:%patch5 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -174,9 +165,6 @@ cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
-
-sed -e '/^\$''Log: /,$d' %{SOURCE2} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
-echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
 %if %{with FHS}
