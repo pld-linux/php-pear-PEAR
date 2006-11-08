@@ -10,8 +10,7 @@
 %define		_rc			a1
 #
 %include	/usr/lib/rpm/macros.php
-%include	%{_sourcedir}/php-pear-build-macros
-%define		_rel	0.28
+%define		_rel	1
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -29,7 +28,7 @@ Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	php-cli
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
-BuildRequires:	rpmbuild(macros) >= 1.300
+BuildRequires:	rpmbuild(macros) >= 1.324
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php-pcre
