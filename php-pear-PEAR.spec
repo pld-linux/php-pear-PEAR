@@ -1,3 +1,7 @@
+#
+# Conditional build:
+%bcond_with	FHS			# writable files in /var/lib/pear. NEEDS LOTS OF PATCHING AND CONVINCING UPSTREAM
+#
 # NOTE
 # - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
@@ -51,8 +55,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # PEAR_Command_Packaging is separate package
 %define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
+%if %{with FHS}
 %define		_statedir		/var/lib/pear
-%define		pear_registry	%{_statedir}/registry
+%define		_registrydir	%{_statedir}/registry
+%define		_channelsdir	%{_statedir}/.channels
+%else
+%define		_statedir		%{php_pear_dir}
+%define		_registrydir	%{_statedir}/.registry
+%define		_channelsdir	%{_statedir}/.channels
+%endif
 
 %description
 The PEAR package contains:
@@ -112,11 +123,11 @@ oraz klasy dla PHP 5:
 %pear_package_setup -z -a1 -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
+#%patch1 -p1
+#%patch2 -p1
+#%patch3 -p1
+#%patch4 -p1
+#%patch5 -p1
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -137,11 +148,11 @@ cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
 
-install -d $RPM_BUILD_ROOT%{_statedir}/channels/.alias
-install -d $RPM_BUILD_ROOT%{pear_registry}/{.channel.{__uri,pecl.php.net},channels/.alias}
+install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
+install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
-touch $RPM_BUILD_ROOT%{_statedir}/channels/{__uri,{pear,pecl}.php.net}.reg
-touch $RPM_BUILD_ROOT%{_statedir}/channels/.alias/{pear,pecl}.txt
+touch $RPM_BUILD_ROOT%{_channelsdir}/{__uri,{pear,pecl}.php.net}.reg
+touch $RPM_BUILD_ROOT%{_channelsdir}/.alias/{pear,pecl}.txt
 touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
 touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 
@@ -168,21 +179,24 @@ sed -e '/^\$''Log: /,$d' %{SOURCE2} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_cla
 echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
 
 %post
+%if %{with FHS}
 if [ ! -L %{php_pear_dir}/.registry ]; then
 	if [ -d %{php_pear_dir}/.registry ]; then
-		install -d %{pear_registry}
-		mv -f %{php_pear_dir}/.registry/*.reg %{pear_registry}
+		install -d %{_registrydir}
+		mv -f %{php_pear_dir}/.registry/*.reg %{_registrydir}
 		rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
 		rmdir %{php_pear_dir}/.registry/* 2>/dev/null
 		rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
 	fi
-	ln -s %{pear_registry} %{php_pear_dir}/.registry
+	ln -s %{_registrydir} %{php_pear_dir}/.registry
 fi
+%endif
 
 if [ ! -f %{php_pear_dir}/.lock ]; then
 	umask 2
 	%{_bindir}/pear list > /dev/null
 fi
+
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
 fi
@@ -206,23 +220,25 @@ rm -rf $RPM_BUILD_ROOT
 
 %{php_pear_dir}/data/*
 
+%if %{with FHS}
 %dir %{_statedir}
-%dir %{_statedir}/channels
-%dir %{_statedir}/registry
-%dir %{_statedir}/channels/.alias
+%dir %{_registrydir}
+%ghost %dir %{php_pear_dir}/.registry
+%endif
+%dir %{_channelsdir}
+%dir %{_channelsdir}/.alias
 
-%ghost %{_statedir}/channels/.alias/pear.txt
-%ghost %{_statedir}/channels/.alias/pecl.txt
-%ghost %{_statedir}/channels/pear.php.net.reg
-%ghost %{_statedir}/channels/pecl.php.net.reg
-%ghost %{_statedir}/channels/__uri.reg
-%ghost %{_statedir}/registry/.channel.__uri
-%ghost %{_statedir}/registry/.channel.pecl.php.net
+%ghost %{_channelsdir}/.alias/pear.txt
+%ghost %{_channelsdir}/.alias/pecl.txt
+%ghost %{_channelsdir}/pear.php.net.reg
+%ghost %{_channelsdir}/pecl.php.net.reg
+%ghost %{_channelsdir}/__uri.reg
+%ghost %{_registrydir}/.channel.__uri
+%ghost %{_registrydir}/.channel.pecl.php.net
 %ghost %{_statedir}/.depdblock
 %ghost %{_statedir}/.depdb
 %ghost %{php_pear_dir}/.filemap
 %ghost %{php_pear_dir}/.lock
-%ghost %dir %{php_pear_dir}/.registry
 
 %files core
 %defattr(644,root,root,755)
