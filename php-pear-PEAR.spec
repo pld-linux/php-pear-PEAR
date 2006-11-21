@@ -10,7 +10,7 @@
 %define		_rc			a1
 #
 %include	/usr/lib/rpm/macros.php
-%define		_rel	1
+%define		_rel	2
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
@@ -31,12 +31,12 @@ BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.324
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
-Requires:	php-pcre
+Requires:	php(pcre)
+Requires:	php(xml)
+Requires:	php(zlib)
 Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
-Requires:	php-xml
-Requires:	php-zlib
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
