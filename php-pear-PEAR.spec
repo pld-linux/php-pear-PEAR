@@ -26,7 +26,8 @@ Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 Patch0:		%{name}-sysconfdir.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
-BuildRequires:	php-cli
+BuildRequires:	/usr/bin/php
+BuildRequires:	php(xml)
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.324
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
