@@ -115,7 +115,7 @@ oraz klasy dla PHP 5:
 %prep
 %define __build_dir %{_builddir}/%{_class}-%{version}%{?_rc}
 %define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz)
-%define __pear php -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
+%define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
 %pear_package_setup -z -a1 -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
