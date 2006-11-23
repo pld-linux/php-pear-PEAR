@@ -27,6 +27,7 @@ Patch0:		%{name}-sysconfdir.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	/usr/bin/php
+BuildRequires:	php(pcre)
 BuildRequires:	php(xml)
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.324
