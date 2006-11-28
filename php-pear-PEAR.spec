@@ -1,3 +1,5 @@
+# TODO
+# - bootstrap fails if /usr/share/pear/.lock doesn't exist (just create it as 644)
 #
 # Conditional build:
 %bcond_with	FHS			# writable files in /var/lib/pear. NEEDS LOTS OF PATCHING AND CONVINCING UPSTREAM
