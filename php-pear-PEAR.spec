@@ -12,7 +12,7 @@
 %define		_rc			a1
 #
 %include	/usr/lib/rpm/macros.php
-%define		_rel	3
+%define		_rel	4
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
