@@ -14,7 +14,7 @@
 %include	/usr/lib/rpm/macros.php
 %define		_rel	4
 Summary:	PEAR Base System
-Summary(pl):	Podstawowy system PEAR
+Summary(pl.UTF-8):   Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.5.0
 Release:	1.%{_rc}.%{_rel}
@@ -78,24 +78,24 @@ The PEAR package contains:
 
 In PEAR status of this package is: %{_status}.
 
-%description -l pl
+%description -l pl.UTF-8
 Pakiet PEAR zawiara:
-- PEAR installer do tworzenia, dystrybucji i instalowania pakietów,
-- mechanizm PEAR_Exception (w fazie alpha) do obs³ugi b³êdów PHP5,
-- zaawansowany mechanizm PEAR_ErrorStack (w fazie beta) do obs³ugi
-  b³êdów,
-- mechanizm obs³ugi b³êdów PEAR_Error,
-- klasê OS_Guess do pozyskiwania informacji na temat systemu
+- PEAR installer do tworzenia, dystrybucji i instalowania pakietÃ³w,
+- mechanizm PEAR_Exception (w fazie alpha) do obsÅ‚ugi bÅ‚Ä™dÃ³w PHP5,
+- zaawansowany mechanizm PEAR_ErrorStack (w fazie beta) do obsÅ‚ugi
+  bÅ‚Ä™dÃ³w,
+- mechanizm obsÅ‚ugi bÅ‚Ä™dÃ³w PEAR_Error,
+- klasÄ™ OS_Guess do pozyskiwania informacji na temat systemu
   operacyjnego,
-- klasê System do szybkiej obs³ugi typowych operacji na plikach i
+- klasÄ™ System do szybkiej obsÅ‚ugi typowych operacji na plikach i
   katalogach,
-- podstawow± klasy PEAR.
+- podstawowÄ… klasy PEAR.
 
 Ta klasa ma w PEAR status: %{_status}.
 
 %package core
 Summary:	PEAR core classes
-Summary(pl):	G³ówne klasy PEAR-a
+Summary(pl.UTF-8):   GÅ‚Ã³wne klasy PEAR-a
 Group:		Development/Languages/PHP
 
 %description core
@@ -106,9 +106,9 @@ This package includes PEAR core classes:
 and classes for PHP 5:
 - PEAR_ErrorStack and PEAR_Exception
 
-%description core -l pl
-Ten pakiet zawiera g³ówne klasy PEAR-a:
-- klasê PEAR i PEAR_Error
+%description core -l pl.UTF-8
+Ten pakiet zawiera gÅ‚Ã³wne klasy PEAR-a:
+- klasÄ™ PEAR i PEAR_Error
 - System
 - OS_Gueass
 oraz klasy dla PHP 5:
