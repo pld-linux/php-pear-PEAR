@@ -14,7 +14,7 @@
 %include	/usr/lib/rpm/macros.php
 %define		_rel	4
 Summary:	PEAR Base System
-Summary(pl.UTF-8):   Podstawowy system PEAR
+Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.5.0
 Release:	1.%{_rc}.%{_rel}
@@ -95,7 +95,7 @@ Ta klasa ma w PEAR status: %{_status}.
 
 %package core
 Summary:	PEAR core classes
-Summary(pl.UTF-8):   Główne klasy PEAR-a
+Summary(pl.UTF-8):	Główne klasy PEAR-a
 Group:		Development/Languages/PHP
 
 %description core
