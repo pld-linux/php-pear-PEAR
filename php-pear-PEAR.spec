@@ -7,24 +7,24 @@
 # NOTE
 # - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
-%define		_status		alpha
+%define		_status		stable
 %define		_pearname	%{_class}
-%define		_rc			a1
 #
 %include	/usr/lib/rpm/macros.php
-%define		_rel	4
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.5.0
-Release:	1.%{_rc}.%{_rel}
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}%{_rc}.tgz
-# Source0-md5:	8f0699f4cf138ac9c6c98a9a9d09133d
+Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
+# Source0-md5:	5902746a1b9def4738fdc2f76333fadb
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 # Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
+Source2:	http://pear.php.net/get/Structures_Graph-1.0.2.tgz
+# Source2-md5:	2664e2d024048f982e12fad4d1bfbb87
 Patch0:		%{name}-sysconfdir.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
@@ -32,7 +32,7 @@ BuildRequires:	/usr/bin/php
 BuildRequires:	php(pcre)
 BuildRequires:	php(xml)
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
-BuildRequires:	rpmbuild(macros) >= 1.324
+BuildRequires:	rpmbuild(macros) >= 1.375
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php(pcre)
@@ -41,6 +41,7 @@ Requires:	php(zlib)
 Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
+Requires:	php-pear-Structures_Graph >= 1.0.2
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
@@ -116,9 +117,11 @@ oraz klasy dla PHP 5:
 
 %prep
 %define __build_dir %{_builddir}/%{_class}-%{version}%{?_rc}
-%define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz)
+%define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
 %define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
-%pear_package_setup -z -a1 -n %{_pearname}-%{version}%{?_rc}
+
+%setup -q -c -n %{_pearname}-%{version} -a1 -a2
+%pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
 %{?with_FHS:%patch5 -p1}
