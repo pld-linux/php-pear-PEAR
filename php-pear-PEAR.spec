@@ -1,44 +1,47 @@
+# TODO
+# - bootstrap fails if /usr/share/pear/.lock doesn't exist (just create it as 644)
 #
 # Conditional build:
-%bcond_with	bootstrap		# bootstrapping - don't require rpm-php-pearprov  to build
+%bcond_with	FHS			# writable files in /var/lib/pear. NEEDS LOTS OF PATCHING AND CONVINCING UPSTREAM
 #
-%include	/usr/lib/rpm/macros.php
+# NOTE
+# - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
 #
-%define	_rel 0.14
+%include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.4.8
-Release:	%{?with_bootstrap:bootstrap.}%{_rel}
+Version:	1.5.0
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	4d29453e1926f11e05b7cfbf4ab085e7
+# Source0-md5:	5902746a1b9def4738fdc2f76333fadb
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 # Source1-md5:	8f9ec8253c04350bc01ee7ca941e24b6
-Source2:	%{name}-template.spec
+Source2:	http://pear.php.net/get/Structures_Graph-1.0.2.tgz
+# Source2-md5:	2664e2d024048f982e12fad4d1bfbb87
 Patch0:		%{name}-sysconfdir.patch
-Patch1:		%{name}-rpmpkgname.patch
-Patch2:		%{name}-rpmvars.patch
-Patch3:		%{name}-old-api.patch
-Patch4:		%{name}-specfile.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
-BuildRequires:	php-cli
-%{!?with_bootstrap:BuildRequires:	rpm-php-pearprov >= 4.4.2-11}
+BuildRequires:	/usr/bin/php
+BuildRequires:	php(pcre)
+BuildRequires:	php(xml)
+BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
+BuildRequires:	rpmbuild(macros) >= 1.375
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
-Requires:	php-pcre
-Requires:	php-pear >= 4:1.0-12.3
+Requires:	php(pcre)
+Requires:	php(xml)
+Requires:	php(zlib)
+Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
-Requires:	php-pear-XML_RPC >= 1.4.0
-Requires:	php-xml
-Requires:	php-zlib
+Requires:	php-pear-Structures_Graph >= 1.0.2
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend-CLI
 Obsoletes:	php-pear-PEAR-OS
@@ -51,11 +54,14 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # PEAR_Command_Packaging is separate package
 %define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
-%define		_statedir	/var/lib/pear
-
-%if %{with bootstrap}
-%define __php_provides %{nil}
-%define __php_requires %{nil}
+%if %{with FHS}
+%define		_statedir		/var/lib/pear
+%define		_registrydir	%{_statedir}/registry
+%define		_channelsdir	%{_statedir}/.channels
+%else
+%define		_statedir		%{php_pear_dir}
+%define		_registrydir	%{_statedir}/.registry
+%define		_channelsdir	%{_statedir}/.channels
 %endif
 
 %description
@@ -92,9 +98,6 @@ Ta klasa ma w PEAR status: %{_status}.
 Summary:	PEAR core classes
 Summary(pl):	G³ówne klasy PEAR-a
 Group:		Development/Languages/PHP
-%if %{with bootstrap}
-Provides:	pear(PEAR.php)
-%endif
 
 %description core
 This package includes PEAR core classes:
@@ -113,24 +116,15 @@ oraz klasy dla PHP 5:
 - PEAR_ErrorStack i PEAR_Exception
 
 %prep
-%if %{with bootstrap}
-P=%{_class}-%{version}
-C=$(basename %{SOURCE1} .tgz)
-%define __pear php -doutput_buffering=1 -dinclude_path=".:../${C}" scripts/pearcmd.php
-%pear_package_setup -z -a1
-%else
-# always use bundled PEAR, as the 1.4.7+ version can't build if PEAR is present
-# on system. you may call it a hack.
-%define __pear php -doutput_buffering=1 scripts/pearcmd.php
-%pear_package_setup -z
-%endif
+%define __build_dir %{_builddir}/%{_class}-%{version}%{?_rc}
+%define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
+%define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
+
+%setup -q -c -n %{_pearname}-%{version} -a1 -a2
+%pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
+%{?with_FHS:%patch5 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
@@ -140,7 +134,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 
 D=$(pwd)
 pearcmd() {
-	php -doutput_buffering=1 -dinclude_path=".:${D}%{php_pear_dir}" ${D}%{php_pear_dir}/pearcmd.php -c ${D}/pearrc "$@"
+	%{__pear} -c ${D}/pearrc "$@"
 }
 pearcmd config-set doc_dir %{_docdir} || exit
 pearcmd config-set data_dir %{php_pear_dir}/data || exit
@@ -151,10 +145,11 @@ cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 %pear_package_install
 
-install -d $RPM_BUILD_ROOT%{_statedir}/{registry/.channel.{__uri,pecl.php.net},channels/.alias}
+install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
+install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
-touch $RPM_BUILD_ROOT%{_statedir}/channels/{__uri,{pear,pecl}.php.net}.reg
-touch $RPM_BUILD_ROOT%{_statedir}/channels/.alias/{pear,pecl}.txt
+touch $RPM_BUILD_ROOT%{_channelsdir}/{__uri,{pear,pecl}.php.net}.reg
+touch $RPM_BUILD_ROOT%{_channelsdir}/.alias/{pear,pecl}.txt
 touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
 touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 
@@ -177,26 +172,27 @@ EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 
-sed -e '/^\$''Log: /,$d' %{SOURCE2} > $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
-echo '$''Log: $' >> $RPM_BUILD_ROOT%{php_pear_dir}/data/%{_class}/template.spec
-
 %post
-if [ ! -e %{php_pear_dir}/.registry ]; then
-	ln -s %{_statedir}/registry %{php_pear_dir}/.registry
+%if %{with FHS}
+if [ ! -L %{php_pear_dir}/.registry ]; then
+	if [ -d %{php_pear_dir}/.registry ]; then
+		install -d %{_registrydir}
+		mv -f %{php_pear_dir}/.registry/*.reg %{_registrydir}
+		rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
+		rmdir %{php_pear_dir}/.registry/* 2>/dev/null
+		rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
+	fi
+	ln -s %{_registrydir} %{php_pear_dir}/.registry
 fi
+%endif
+
 if [ ! -f %{php_pear_dir}/.lock ]; then
+	umask 2
 	%{_bindir}/pear list > /dev/null
 fi
+
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
-fi
-
-%triggerpostun -- %{name} < 1:1.4.7-0.3
-if [ ! -L %{php_pear_dir}/.registry ]; then
-	mv -f %{php_pear_dir}/.registry/*.reg %{_statedir}/registry
-	rmdir %{php_pear_dir}/.registry/* 2>/dev/null
-	rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
-	ln -s %{_statedir}/registry %{php_pear_dir}/.registry
 fi
 
 %clean
@@ -207,7 +203,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
 %attr(755,root,root) %{_bindir}/*
-%{php_pear_dir}/.registry/*.reg
+%{php_pear_dir}/.registry/pear.reg
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
 %{php_pear_dir}/PEAR/[!CE]*
@@ -218,18 +214,21 @@ rm -rf $RPM_BUILD_ROOT
 
 %{php_pear_dir}/data/*
 
+%if %{with FHS}
 %dir %{_statedir}
-%dir %{_statedir}/channels
-%dir %{_statedir}/registry
-%dir %{_statedir}/channels/.alias
+%dir %{_registrydir}
+%ghost %dir %{php_pear_dir}/.registry
+%endif
+%dir %{_channelsdir}
+%dir %{_channelsdir}/.alias
 
-%ghost %{_statedir}/channels/.alias/pear.txt
-%ghost %{_statedir}/channels/.alias/pecl.txt
-%ghost %{_statedir}/channels/pear.php.net.reg
-%ghost %{_statedir}/channels/pecl.php.net.reg
-%ghost %{_statedir}/channels/__uri.reg
-%ghost %{_statedir}/registry/.channel.__uri
-%ghost %{_statedir}/registry/.channel.pecl.php.net
+%ghost %{_channelsdir}/.alias/pear.txt
+%ghost %{_channelsdir}/.alias/pecl.txt
+%ghost %{_channelsdir}/pear.php.net.reg
+%ghost %{_channelsdir}/pecl.php.net.reg
+%ghost %{_channelsdir}/__uri.reg
+%ghost %{_registrydir}/.channel.__uri
+%ghost %{_registrydir}/.channel.pecl.php.net
 %ghost %{_statedir}/.depdblock
 %ghost %{_statedir}/.depdb
 %ghost %{php_pear_dir}/.filemap
