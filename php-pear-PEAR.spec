@@ -131,10 +131,7 @@ oraz klasy dla PHP 5:
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
 
-%install
-rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
-
+%build
 D=$(pwd)
 pearcmd() {
 	%{__pear} -c ${D}/pearrc "$@"
@@ -144,9 +141,12 @@ pearcmd config-set data_dir %{php_pear_dir}/data || exit
 pearcmd config-set php_dir %{php_pear_dir} || exit
 pearcmd config-set test_dir %{php_pear_dir}/tests || exit
 pearcmd config-set sig_bin %{_bindir}/gpg || exit
-cp $D/pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
+%install
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 %pear_package_install
+cp pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
 install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
