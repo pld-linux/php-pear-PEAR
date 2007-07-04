@@ -18,7 +18,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.6.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -29,6 +29,7 @@ Source1:	http://pear.php.net/get/Console_Getopt-1.2.tgz
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.2.tgz
 # Source2-md5:	2664e2d024048f982e12fad4d1bfbb87
 Patch0:		%{name}-sysconfdir.patch
+Patch1:		%{name}-strict.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	/usr/bin/php
@@ -127,6 +128,7 @@ oraz klasy dla PHP 5:
 %pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
+%patch1 -p1
 %{?with_FHS:%patch5 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
