@@ -18,7 +18,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.6.2
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -172,7 +172,7 @@ EOF
 # -n is there because devs on #pear said this avoids locking problems when replacing in use libraries.
 cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 #!/bin/sh
-%php_exec -dmemory_limit=24M -dsafe_mode=0 -n -dextension=pcre.so -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
+%php_exec -dmemory_limit=24M -dsafe_mode=0 -n -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
 EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
