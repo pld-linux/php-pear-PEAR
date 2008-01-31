@@ -18,7 +18,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.6.2
-Release:	2
+Release:	3
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
