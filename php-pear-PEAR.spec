@@ -7,8 +7,6 @@
 # Conditional build:
 %bcond_with	FHS			# writable files in /var/lib/pear. NEEDS LOTS OF PATCHING AND CONVINCING UPSTREAM
 #
-# NOTE
-# - macros needed to build this package are in SOURCES/php-pear-build-macros@DEVEL
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
@@ -18,7 +16,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	2
+Release:	3
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -205,15 +203,17 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
-%attr(755,root,root) %{_bindir}/*
+%{_bindir}/pear
+%{_bindir}/peardev
+%{_bindir}/pecl
 %{php_pear_dir}/.registry/pear.reg
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
-%{php_pear_dir}/PEAR/[!CE]*
-%{php_pear_dir}/PEAR/ChannelFile*
-%{php_pear_dir}/PEAR/Command*
-%{php_pear_dir}/PEAR/Config.php
-%{php_pear_dir}/PEAR/Common.php
+%{php_pear_dir}/PEAR/*
+# in -core subpackage
+%exclude %{php_pear_dir}/PEAR/ErrorStack.php
+%exclude %{php_pear_dir}/PEAR/Exception.php
+%exclude %{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
 
 %{php_pear_dir}/data/*
 
@@ -245,3 +245,4 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{php_pear_dir}/PEAR
 %{php_pear_dir}/PEAR/ErrorStack.php
 %{php_pear_dir}/PEAR/Exception.php
+%{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
