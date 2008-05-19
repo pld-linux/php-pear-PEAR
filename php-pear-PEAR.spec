@@ -16,7 +16,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	3
+Release:	4
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -203,9 +203,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
-%{_bindir}/pear
-%{_bindir}/peardev
-%{_bindir}/pecl
+%attr(755,root,root) %{_bindir}/pear
+%attr(755,root,root) %{_bindir}/peardev
+%attr(755,root,root) %{_bindir}/pecl
 %{php_pear_dir}/.registry/pear.reg
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
