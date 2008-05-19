@@ -18,7 +18,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	1
+Release:	2
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -45,10 +45,10 @@ Requires:	php-pear >= 4:1.0-14
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-Structures_Graph >= 1.0.2
-Obsoletes:	php-pear-PEAR-Command
-Obsoletes:	php-pear-PEAR-Frontend-CLI
-Obsoletes:	php-pear-PEAR-OS
 #Suggests:	php-pear-Net_FTP
+Obsoletes:	php-pear-PEAR-Command
+Obsoletes:	php-pear-PEAR-Frontend_CLI
+Obsoletes:	php-pear-PEAR-OS
 Conflicts:	php-pear-Archive_Tar = 1.3.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
 Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
