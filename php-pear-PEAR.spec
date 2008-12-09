@@ -16,7 +16,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	5
+Release:	6
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -149,7 +149,13 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 cp pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
-install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
+install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.__uri,channels/.alias}
+# extra channel dirs
+install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pecl.php.net
+install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phpdb.org
+install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phing.info
+install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phpunit.de
+
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
 touch $RPM_BUILD_ROOT%{_channelsdir}/{__uri,{pear,pecl}.php.net}.reg
 touch $RPM_BUILD_ROOT%{_channelsdir}/.alias/{pear,pecl}.txt
