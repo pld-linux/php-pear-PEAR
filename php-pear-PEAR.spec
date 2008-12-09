@@ -149,13 +149,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
 cp pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
-install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.__uri,channels/.alias}
-# extra channel dirs
-install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pecl.php.net
-install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phpdb.org
-install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phing.info
-install -d $RPM_BUILD_ROOT%{_registrydir}/.channel.pear.phpunit.de
-
+install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
 touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
 touch $RPM_BUILD_ROOT%{_channelsdir}/{__uri,{pear,pecl}.php.net}.reg
 touch $RPM_BUILD_ROOT%{_channelsdir}/.alias/{pear,pecl}.txt
