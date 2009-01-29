@@ -16,7 +16,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	7
+Release:	8
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -160,7 +160,7 @@ touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
 cat > $RPM_BUILD_ROOT%{_bindir}/pear <<'EOF'
 #!/bin/sh
-%php_exec -dopen_basedir="" -dmemory_limit=24M %{php_pear_dir}/pearcmd.php "$@"
+%php_exec -dopen_basedir="" -dmemory_limit=64M %{php_pear_dir}/pearcmd.php "$@"
 EOF
 cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
 #!/bin/sh
@@ -170,7 +170,7 @@ EOF
 # -n is there because devs on #pear said this avoids locking problems when replacing in use libraries.
 cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 #!/bin/sh
-%php_exec -dmemory_limit=24M -dsafe_mode=0 -n -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
+%php_exec -dmemory_limit=64M -dsafe_mode=0 -n -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
 EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
