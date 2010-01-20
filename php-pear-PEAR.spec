@@ -16,7 +16,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	8
+Release:	9
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -136,15 +136,16 @@ D=$(pwd)
 pearcmd() {
 	%{__pear} -c ${D}/pearrc "$@"
 }
-pearcmd config-set doc_dir %{_docdir} || exit
-pearcmd config-set data_dir %{php_pear_dir}/data || exit
-pearcmd config-set php_dir %{php_pear_dir} || exit
-pearcmd config-set test_dir %{php_pear_dir}/tests || exit
-pearcmd config-set sig_bin %{_bindir}/gpg || exit
+pearcmd config-set doc_dir %{_docdir}
+pearcmd config-set data_dir %{php_pear_dir}/data
+pearcmd config-set php_dir %{php_pear_dir}
+pearcmd config-set test_dir %{php_pear_dir}/tests
+pearcmd config-set sig_bin %{_bindir}/gpg
+pearcmd config-set cfg_dir %{_sysconfdir}/pear
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir},%{php_pear_dir},%{_bindir}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pear,%{php_pear_dir},%{_bindir}}
 %pear_package_install
 cp pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
@@ -205,6 +206,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc install.log optional-packages.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pear.conf
+%dir %{_sysconfdir}/pear
 %attr(755,root,root) %{_bindir}/pear
 %attr(755,root,root) %{_bindir}/peardev
 %attr(755,root,root) %{_bindir}/pecl
