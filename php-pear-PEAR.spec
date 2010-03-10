@@ -4,19 +4,16 @@
 #   pear/Auth can optionally use package "pecl/vpopmail" (version >= 0.2)
 #   pear/Auth can optionally use package "pecl/kadm5" (version >= 0.2.3)
 #
-# Conditional build:
-%bcond_with	FHS			# writable files in /var/lib/pear. NEEDS LOTS OF PATCHING AND CONVINCING UPSTREAM
-#
 %define		_class		PEAR
 %define		_status		stable
 %define		_pearname	%{_class}
-#
+
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.7.2
-Release:	9
+Release:	10
 Epoch:		1
 License:	PHP 3.0
 Group:		Development/Languages/PHP
@@ -39,7 +36,7 @@ Requires:	/usr/bin/php
 Requires:	php(pcre)
 Requires:	php(xml)
 Requires:	php(zlib)
-Requires:	php-pear >= 4:1.0-14
+Requires:	php-pear >= 4:1.2-1
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-Structures_Graph >= 1.0.2
@@ -56,16 +53,8 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # PEAR_Command_Packaging is separate package
+# PEAR_FTP is optional
 %define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
-%if %{with FHS}
-%define		_statedir		/var/lib/pear
-%define		_registrydir	%{_statedir}/registry
-%define		_channelsdir	%{_statedir}/.channels
-%else
-%define		_statedir		%{php_pear_dir}
-%define		_registrydir	%{_statedir}/.registry
-%define		_channelsdir	%{_statedir}/.channels
-%endif
 
 %description
 The PEAR package contains:
@@ -147,15 +136,7 @@ pearcmd config-set cfg_dir %{_sysconfdir}/pear
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sysconfdir}/pear,%{php_pear_dir},%{_bindir}}
 %pear_package_install
-cp pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
-
-install -d $RPM_BUILD_ROOT%{_channelsdir}/.alias
-install -d $RPM_BUILD_ROOT%{_registrydir}/{.channel.{__uri,pecl.php.net},channels/.alias}
-touch $RPM_BUILD_ROOT%{_statedir}/.depdb{,lock}
-touch $RPM_BUILD_ROOT%{_channelsdir}/{__uri,{pear,pecl}.php.net}.reg
-touch $RPM_BUILD_ROOT%{_channelsdir}/.alias/{pear,pecl}.txt
-touch $RPM_BUILD_ROOT%{php_pear_dir}/.filemap
-touch $RPM_BUILD_ROOT%{php_pear_dir}/.lock
+cp -a pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 
 # -C and -q options were for php-cgi, in php-cli they're enabled by default.
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
@@ -177,24 +158,6 @@ EOF
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 
 %post
-%if %{with FHS}
-if [ ! -L %{php_pear_dir}/.registry ]; then
-	if [ -d %{php_pear_dir}/.registry ]; then
-		install -d %{_registrydir}
-		mv -f %{php_pear_dir}/.registry/*.reg %{_registrydir}
-		rmdir %{php_pear_dir}/.registry/.channel.* 2>/dev/null
-		rmdir %{php_pear_dir}/.registry/* 2>/dev/null
-		rmdir %{php_pear_dir}/.registry 2>/dev/null || mv -v %{php_pear_dir}/.registry{,.rpmsave}
-	fi
-	ln -s %{_registrydir} %{php_pear_dir}/.registry
-fi
-%endif
-
-if [ ! -f %{php_pear_dir}/.lock ]; then
-	umask 2
-	%{_bindir}/pear list > /dev/null
-fi
-
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
 fi
@@ -214,30 +177,13 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
 %{php_pear_dir}/PEAR/*
+
 # in -core subpackage
 %exclude %{php_pear_dir}/PEAR/ErrorStack.php
 %exclude %{php_pear_dir}/PEAR/Exception.php
 %exclude %{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
 
 %{php_pear_dir}/data/*
-
-%if %{with FHS}
-%dir %{_statedir}
-%dir %{_registrydir}
-%ghost %dir %{php_pear_dir}/.registry
-%endif
-
-%ghost %{_channelsdir}/.alias/pear.txt
-%ghost %{_channelsdir}/.alias/pecl.txt
-%ghost %{_channelsdir}/pear.php.net.reg
-%ghost %{_channelsdir}/pecl.php.net.reg
-%ghost %{_channelsdir}/__uri.reg
-%ghost %{_registrydir}/.channel.__uri
-%ghost %{_registrydir}/.channel.pecl.php.net
-%ghost %{_statedir}/.depdblock
-%ghost %{_statedir}/.depdb
-%ghost %{php_pear_dir}/.filemap
-%ghost %{php_pear_dir}/.lock
 
 %files core
 %defattr(644,root,root,755)
