@@ -8,17 +8,18 @@
 %define		_status		stable
 %define		_pearname	%{_class}
 
+%define		php_min_version 5.0.0
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.7.2
-Release:	10
+Version:	1.9.0
+Release:	0.4
 Epoch:		1
-License:	PHP 3.0
+License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	6614c4862f16c80eadb2d00b776d33c0
+# Source0-md5:	2f0056187b5f527c0f418f83014fc2a7
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.2.tgz
@@ -30,16 +31,17 @@ BuildRequires:	/usr/bin/php
 BuildRequires:	php(pcre)
 BuildRequires:	php(xml)
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
-BuildRequires:	rpmbuild(macros) >= 1.375
+BuildRequires:	rpmbuild(macros) >= 1.563
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
-Requires:	php(pcre)
-Requires:	php(xml)
-Requires:	php(zlib)
+Requires:	php-common >= 4:%{php_min_version}
+Requires:	php-pcre
 Requires:	php-pear >= 4:1.2-1
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-Structures_Graph >= 1.0.2
+Requires:	php-xml
+Requires:	php-zlib
 Requires:	rpm-whiteout
 Suggests:	php-pear-Net_FTP
 Obsoletes:	php-pear-PEAR-Command
@@ -49,6 +51,7 @@ Conflicts:	php-pear-Archive_Tar = 1.3.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
 Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	rpm-whiteout < 1.1
+Conflicts:	rpmbuild(macros) < 1.563
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -90,6 +93,7 @@ Ta klasa ma w PEAR status: %{_status}.
 Summary:	PEAR core classes
 Summary(pl.UTF-8):	Główne klasy PEAR-a
 Group:		Development/Languages/PHP
+Requires:	php-common >= 4:%{php_min_version}
 
 %description core
 This package includes PEAR core classes:
@@ -188,6 +192,7 @@ rm -rf $RPM_BUILD_ROOT
 %files core
 %defattr(644,root,root,755)
 %{php_pear_dir}/PEAR.php
+%{php_pear_dir}/PEAR5.php
 %{php_pear_dir}/System.php
 %{php_pear_dir}/OS
 %dir %{php_pear_dir}/PEAR
