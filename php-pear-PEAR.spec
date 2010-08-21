@@ -14,7 +14,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.9.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
@@ -40,6 +40,7 @@ Requires:	php-pear >= 4:1.2-1
 Requires:	php-pear-Archive_Tar >= 1.1
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-Structures_Graph >= 1.0.2
+Requires:	php-pear-XML_Util >= 1.2.0
 Requires:	php-xml
 Requires:	php-zlib
 Requires:	rpm-whiteout
