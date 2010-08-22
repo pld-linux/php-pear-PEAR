@@ -14,7 +14,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.9.1
-Release:	2
+Release:	3
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
@@ -165,6 +165,12 @@ chmod +x $RPM_BUILD_ROOT%{_bindir}/*
 %post
 if [ -f %{_docdir}/%{name}-%{version}/optional-packages.txt ]; then
 	cat %{_docdir}/%{name}-%{version}/optional-packages.txt
+fi
+
+# need to bootstrap for non-root user
+if [ ! -f %{php_pear_dir}/.lock ]; then
+	umask 2
+	%{_bindir}/pear list > /dev/null
 fi
 
 %clean
