@@ -147,7 +147,7 @@ cp -a pearrc $RPM_BUILD_ROOT%{_sysconfdir}/pear.conf
 %define php_exec exec /usr/bin/php -dinclude_path=%{php_pear_dir} -doutput_buffering=1
 cat > $RPM_BUILD_ROOT%{_bindir}/pear <<'EOF'
 #!/bin/sh
-%php_exec -dopen_basedir="" -dmemory_limit=64M %{php_pear_dir}/pearcmd.php "$@"
+%php_exec -dopen_basedir="" -dmemory_limit=128M %{php_pear_dir}/pearcmd.php "$@"
 EOF
 cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
 #!/bin/sh
