@@ -4,27 +4,26 @@
 #   pear/Auth can optionally use package "pecl/vpopmail" (version >= 0.2)
 #   pear/Auth can optionally use package "pecl/kadm5" (version >= 0.2.3)
 #
-%define		_class		PEAR
+%define		_pearname	PEAR
 %define		_status		stable
-%define		_pearname	%{_class}
-
 %define		php_min_version 5.0.0
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.9.1
-Release:	3
+Version:	1.9.2
+Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	e301d2d81371327a96864a307b85509d
+# Source0-md5:	2810094b44cf1e9e7da5b5bc3e7b1798
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.3.tgz
 # Source2-md5:	d2d8db74818be5cb0af7def3fc285bfc
 Patch0:		%{name}-sysconfdir.patch
+Patch1:		bug-18428.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	/usr/bin/php
@@ -37,7 +36,7 @@ Requires:	/usr/bin/php
 Requires:	php-common >= 4:%{php_min_version}
 Requires:	php-pcre
 Requires:	php-pear >= 4:1.2-1
-Requires:	php-pear-Archive_Tar >= 1.1
+Requires:	php-pear-Archive_Tar >= 1.3.7
 Requires:	php-pear-Console_Getopt >= 1.2
 Requires:	php-pear-Structures_Graph >= 1.0.2
 Requires:	php-pear-XML_Util >= 1.2.0
@@ -48,7 +47,6 @@ Suggests:	php-pear-Net_FTP
 Obsoletes:	php-pear-PEAR-Command
 Obsoletes:	php-pear-PEAR-Frontend_CLI
 Obsoletes:	php-pear-PEAR-OS
-Conflicts:	php-pear-Archive_Tar = 1.3.0
 Conflicts:	php-pear-PEAR_Frontend_Gtk < 0.4.0
 Conflicts:	php-pear-PEAR_Frontend_Web < 0.5.0
 Conflicts:	rpm-whiteout < 1.1
@@ -113,14 +111,15 @@ oraz klasy dla PHP 5:
 - PEAR_ErrorStack i PEAR_Exception
 
 %prep
-%define __build_dir %{_builddir}/%{_class}-%{version}%{?_rc}
-%define	__php_include_path %{__build_dir}/%{_class}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
-%define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_class}-%{version}%{?_rc}/scripts/pearcmd.php
+%define __build_dir %{_builddir}/%{_pearname}-%{version}%{?_rc}
+%define	__php_include_path %{__build_dir}/%{_pearname}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
+%define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_pearname}-%{version}%{?_rc}/scripts/pearcmd.php
 
 %setup -q -c -n %{_pearname}-%{version} -a1 -a2
 %pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
+%patch1 -p1
 %{?with_FHS:%patch5 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
