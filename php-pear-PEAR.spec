@@ -11,19 +11,18 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.9.2
+Version:	1.9.4
 Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	2810094b44cf1e9e7da5b5bc3e7b1798
+# Source0-md5:	c52b09758e851235e6a93a2c1e1a8ee9
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.3.tgz
 # Source2-md5:	d2d8db74818be5cb0af7def3fc285bfc
 Patch0:		%{name}-sysconfdir.patch
-Patch1:		bug-18428.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	/usr/bin/php
@@ -119,7 +118,6 @@ oraz klasy dla PHP 5:
 %pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
-%patch1 -p1
 %{?with_FHS:%patch5 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
