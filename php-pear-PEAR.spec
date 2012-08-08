@@ -12,7 +12,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.9.4
-Release:	2
+Release:	3
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
@@ -26,8 +26,8 @@ Patch0:		%{name}-sysconfdir.patch
 Patch5:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
 BuildRequires:	/usr/bin/php
-BuildRequires:	php(pcre)
-BuildRequires:	php(xml)
+BuildRequires:	php-pcre
+BuildRequires:	php-xml
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.563
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
