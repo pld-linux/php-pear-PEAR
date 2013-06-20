@@ -29,7 +29,7 @@ BuildRequires:	/usr/bin/php
 BuildRequires:	php-pcre
 BuildRequires:	php-xml
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
-BuildRequires:	rpmbuild(macros) >= 1.563
+BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
 Requires:	/usr/bin/php
 Requires:	php(core) >= %{php_min_version}
@@ -55,7 +55,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # PEAR_Command_Packaging is separate package
 # PEAR_FTP is optional
-%define		_noautoreq	'pear(PEAR/FTP.php)' 'pear(Net/FTP.php)' 'pear(XML/RPC.*)' 'pear(PEAR/Command/Packaging.php)'
+%define		_noautoreq_pear PEAR/FTP.php Net/FTP.php XML/RPC.* PEAR/Command/Packaging.php
 
 %description
 The PEAR package contains:
