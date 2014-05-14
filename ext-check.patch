@@ -7,7 +7,7 @@
 +// before trying anything deep, ensure base extensions are present
 +// this avoids debugging problems with bogus error messages, which really are
 +// caused by missing extension
-+foreach (array('pcre', 'zlib', 'xml2') as $ext) {
++foreach (array('pcre', 'zlib', 'xml') as $ext) {
 +	if (!extension_loaded($ext)) {
 +		error_log("$argv[0] requires PHP extension $ext.");
 +		exit(1);
