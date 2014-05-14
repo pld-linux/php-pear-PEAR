@@ -6,6 +6,7 @@
 #
 %define		_pearname	PEAR
 %define		_status		stable
+%define		php_name	php%{?php_suffix}
 %define		php_min_version 5.0.0
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
@@ -26,9 +27,9 @@ Patch0:		%{name}-sysconfdir.patch
 Patch1:		ext-check.patch
 Patch2:		%{name}-FHS.patch
 URL:		http://pear.php.net/package/PEAR
+BuildRequires:	%{php_name}-pcre
+BuildRequires:	%{php_name}-xml
 BuildRequires:	/usr/bin/php
-BuildRequires:	php-pcre
-BuildRequires:	php-xml
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.654
 Requires:	%{name}-core = %{epoch}:%{version}-%{release}
