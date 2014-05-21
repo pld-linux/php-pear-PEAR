@@ -9,7 +9,7 @@
 +// caused by missing extension
 +foreach (array('pcre', 'zlib', 'xml') as $ext) {
 +	if (!extension_loaded($ext)) {
-+		error_log("$argv[0] requires PHP extension $ext.");
++		error_log("pear requires PHP extension '$ext' for ".PHP_VERSION);
 +		exit(1);
 +	}
 +}
