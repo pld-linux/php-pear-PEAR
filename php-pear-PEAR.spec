@@ -12,13 +12,13 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.9.4
-Release:	5
+Version:	1.9.5
+Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	c52b09758e851235e6a93a2c1e1a8ee9
+# Source0-md5:	f44a56765988dafbe348828cac2562ca
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.3.tgz
@@ -39,10 +39,10 @@ Requires:	php(pcre)
 Requires:	php(xml)
 Requires:	php(zlib)
 Requires:	php-pear >= 4:1.2-1
-Requires:	php-pear-Archive_Tar >= 1.3.7
-Requires:	php-pear-Console_Getopt >= 1.2
-Requires:	php-pear-Structures_Graph >= 1.0.2
-Requires:	php-pear-XML_Util >= 1.2.0
+Requires:	php-pear-Archive_Tar >= 1.3.11
+Requires:	php-pear-Console_Getopt >= 1.2.3
+Requires:	php-pear-Structures_Graph >= 1.0.4
+Requires:	php-pear-XML_Util >= 1.2.3
 Requires:	rpm-whiteout
 Suggests:	php-pear-Net_FTP
 Obsoletes:	php-pear-PEAR-Command
