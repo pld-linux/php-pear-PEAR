@@ -4,21 +4,21 @@
 #   pear/Auth can optionally use package "pecl/vpopmail" (version >= 0.2)
 #   pear/Auth can optionally use package "pecl/kadm5" (version >= 0.2.3)
 #
-%define		_pearname	PEAR
-%define		_status		stable
+%define		subver		dev2
+%define		pearname	PEAR
 %define		php_name	php%{?php_suffix}
-%define		php_min_version 5.0.0
+%define		php_min_version 5.4.0
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
-Name:		php-pear-%{_pearname}
-Version:	1.9.5
-Release:	1
+Name:		php-pear-%{pearname}
+Version:	1.10.0
+Release:	0.1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	f44a56765988dafbe348828cac2562ca
+Source0:	http://pear.php.net/get/%{pearname}-%{version}%{?subver}.tgz
+# Source0-md5:	9fe616ae8937abce56358df10aaa183d
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
 Source2:	http://pear.php.net/get/Structures_Graph-1.0.3.tgz
@@ -72,8 +72,6 @@ The PEAR package contains:
   and directories
 - the PEAR base class packages
 
-In PEAR status of this package is: %{_status}.
-
 %description -l pl.UTF-8
 Pakiet PEAR zawiara:
 - PEAR installer do tworzenia, dystrybucji i instalowania pakietów,
@@ -86,8 +84,6 @@ Pakiet PEAR zawiara:
 - klasę System do szybkiej obsługi typowych operacji na plikach i
   katalogach,
 - podstawową klasy PEAR.
-
-Ta klasa ma w PEAR status: %{_status}.
 
 %package core
 Summary:	PEAR core classes
@@ -112,12 +108,12 @@ oraz klasy dla PHP 5:
 - PEAR_ErrorStack i PEAR_Exception
 
 %prep
-%define __build_dir %{_builddir}/%{_pearname}-%{version}%{?_rc}
-%define	__php_include_path %{__build_dir}/%{_pearname}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
-%define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_pearname}-%{version}%{?_rc}/scripts/pearcmd.php
+%define __build_dir %{_builddir}/%{pearname}-%{version}%{?subver}
+%define	__php_include_path %{__build_dir}/%{pearname}-%{version}%{?subver}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
+%define __pear %{__php} -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{pearname}-%{version}%{?subver}/scripts/pearcmd.php
 
-%setup -q -c -n %{_pearname}-%{version} -a1 -a2
-%pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
+%setup -q -c -n %{pearname}-%{version}%{?subver} -a1 -a2
+%pear_package_setup -z -D -n %{pearname}-%{version}%{?subver}
 
 %patch0 -p1
 %patch1 -p1
@@ -192,17 +188,14 @@ rm -rf $RPM_BUILD_ROOT
 # in -core subpackage
 %exclude %{php_pear_dir}/PEAR/ErrorStack.php
 %exclude %{php_pear_dir}/PEAR/Exception.php
-%exclude %{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
 
 %{php_pear_dir}/data/*
 
 %files core
 %defattr(644,root,root,755)
 %{php_pear_dir}/PEAR.php
-%{php_pear_dir}/PEAR5.php
 %{php_pear_dir}/System.php
 %{php_pear_dir}/OS
 %dir %{php_pear_dir}/PEAR
 %{php_pear_dir}/PEAR/ErrorStack.php
 %{php_pear_dir}/PEAR/Exception.php
-%{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
