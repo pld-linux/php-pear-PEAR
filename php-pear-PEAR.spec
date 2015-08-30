@@ -17,7 +17,7 @@ Release:	0.1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{pearname}-%{version}%{?subver}.tgz
+Source0:	http://pear.php.net/get/%{pearname}-%{version}%{subver}.tgz
 # Source0-md5:	9fe616ae8937abce56358df10aaa183d
 Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
 # Source1-md5:	d7618327f9302a7191893768982de823
