@@ -12,17 +12,17 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.9.5
+Version:	1.10.1
 Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	f44a56765988dafbe348828cac2562ca
-Source1:	http://pear.php.net/get/Console_Getopt-1.2.3.tgz
-# Source1-md5:	d7618327f9302a7191893768982de823
-Source2:	http://pear.php.net/get/Structures_Graph-1.0.3.tgz
-# Source2-md5:	d2d8db74818be5cb0af7def3fc285bfc
+# Source0-md5:	da3f4d00c7415d39cb57848742e09894
+Source1:	http://pear.php.net/get/Console_Getopt-1.4.1.tgz
+# Source1-md5:	a95c86528f910562772274eefb90ca2c
+Source2:	http://pear.php.net/get/Structures_Graph-1.1.1.tgz
+# Source2-md5:	f1be7827074c4f51eb1af245f0f7c5c4
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		ext-check.patch
 Patch2:		%{name}-FHS.patch
@@ -192,17 +192,14 @@ rm -rf $RPM_BUILD_ROOT
 # in -core subpackage
 %exclude %{php_pear_dir}/PEAR/ErrorStack.php
 %exclude %{php_pear_dir}/PEAR/Exception.php
-%exclude %{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
 
 %{php_pear_dir}/data/*
 
 %files core
 %defattr(644,root,root,755)
 %{php_pear_dir}/PEAR.php
-%{php_pear_dir}/PEAR5.php
 %{php_pear_dir}/System.php
 %{php_pear_dir}/OS
 %dir %{php_pear_dir}/PEAR
 %{php_pear_dir}/PEAR/ErrorStack.php
 %{php_pear_dir}/PEAR/Exception.php
-%{php_pear_dir}/PEAR/FixPHP5PEARWarnings.php
