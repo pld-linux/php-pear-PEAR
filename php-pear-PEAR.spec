@@ -7,13 +7,13 @@
 %define		_pearname	PEAR
 %define		_status		stable
 %define		php_name	php%{?php_suffix}
-%define		php_min_version 5.0.0
+%define		php_min_version 5.4.0
 %include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.10.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
