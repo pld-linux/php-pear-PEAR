@@ -12,13 +12,13 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.10.1
-Release:	2
+Version:	1.10.6
+Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	da3f4d00c7415d39cb57848742e09894
+# Source0-md5:	3e72c1b8885f77f4b7e31789caafea5a
 Source1:	http://pear.php.net/get/Console_Getopt-1.4.1.tgz
 # Source1-md5:	a95c86528f910562772274eefb90ca2c
 Source2:	http://pear.php.net/get/Structures_Graph-1.1.1.tgz
