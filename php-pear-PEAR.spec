@@ -13,7 +13,7 @@ Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
 Version:	1.10.6
-Release:	1
+Release:	2
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
@@ -98,8 +98,6 @@ Requires:	php(core) >= %{php_min_version}
 %description core
 This package includes PEAR core classes:
 - PEAR class and PEAR_Error
-- System
-- OS_Guess
 and classes for PHP 5:
 - PEAR_ErrorStack and PEAR_Exception
 
@@ -188,6 +186,8 @@ rm -rf $RPM_BUILD_ROOT
 %{php_pear_dir}/pearcmd.php
 %{php_pear_dir}/peclcmd.php
 %{php_pear_dir}/PEAR/*
+%{php_pear_dir}/OS
+%{php_pear_dir}/System.php
 
 # in -core subpackage
 %exclude %{php_pear_dir}/PEAR/ErrorStack.php
@@ -198,8 +198,6 @@ rm -rf $RPM_BUILD_ROOT
 %files core
 %defattr(644,root,root,755)
 %{php_pear_dir}/PEAR.php
-%{php_pear_dir}/System.php
-%{php_pear_dir}/OS
 %dir %{php_pear_dir}/PEAR
 %{php_pear_dir}/PEAR/ErrorStack.php
 %{php_pear_dir}/PEAR/Exception.php
