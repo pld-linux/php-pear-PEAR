@@ -12,21 +12,21 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.10.6
-Release:	2
+Version:	1.10.7
+Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
-Source0:	http://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	3e72c1b8885f77f4b7e31789caafea5a
-Source1:	http://pear.php.net/get/Console_Getopt-1.4.1.tgz
+Source0:	https://pear.php.net/get/%{_pearname}-%{version}.tgz
+# Source0-md5:	4ba803c2abb6eb5fa7cc8463afd633f4
+Source1:	https://pear.php.net/get/Console_Getopt-1.4.1.tgz
 # Source1-md5:	a95c86528f910562772274eefb90ca2c
-Source2:	http://pear.php.net/get/Structures_Graph-1.1.1.tgz
+Source2:	https://pear.php.net/get/Structures_Graph-1.1.1.tgz
 # Source2-md5:	f1be7827074c4f51eb1af245f0f7c5c4
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		ext-check.patch
 Patch2:		%{name}-FHS.patch
-URL:		http://pear.php.net/package/PEAR
+URL:		https://pear.php.net/package/PEAR
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-xml
 BuildRequires:	/usr/bin/php
@@ -39,10 +39,10 @@ Requires:	php(pcre)
 Requires:	php(xml)
 Requires:	php(zlib)
 Requires:	php-pear >= 4:1.2-1
-Requires:	php-pear-Archive_Tar >= 1.3.11
-Requires:	php-pear-Console_Getopt >= 1.2.3
-Requires:	php-pear-Structures_Graph >= 1.0.4
-Requires:	php-pear-XML_Util >= 1.2.3
+Requires:	php-pear-Archive_Tar >= 1.4.0
+Requires:	php-pear-Console_Getopt >= 1.4.1
+Requires:	php-pear-Structures_Graph >= 1.1.0
+Requires:	php-pear-XML_Util >= 1.3.0
 Requires:	rpm-whiteout
 Suggests:	php-pear-Net_FTP
 Obsoletes:	php-pear-PEAR-Command
