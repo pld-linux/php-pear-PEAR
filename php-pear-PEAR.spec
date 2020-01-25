@@ -8,7 +8,6 @@
 %define		_status		stable
 %define		php_name	php%{?php_suffix}
 %define		php_min_version 5.4.0
-%include	/usr/lib/rpm/macros.php
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
