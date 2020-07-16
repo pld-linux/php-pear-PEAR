@@ -152,7 +152,7 @@ cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
 EOF
 cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 #!/bin/sh
-%php_exec -dmemory_limit=64M -dsafe_mode=0 -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
+%php_exec -dmemory_limit=64M -dsafe_mode=0 %{php_pear_dir}/peclcmd.php "$@"
 EOF
 # for rpm to find interpreter
 chmod +x $RPM_BUILD_ROOT%{_bindir}/*
