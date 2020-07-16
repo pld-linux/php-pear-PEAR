@@ -150,7 +150,6 @@ cat > $RPM_BUILD_ROOT%{_bindir}/peardev <<'EOF'
 #!/bin/sh
 %php_exec -dopen_basedir="" -dmemory_limit=-1 %{php_pear_dir}/pearcmd.php "$@"
 EOF
-# This -dextension=pcre.so works with php-5.1, and patched php-cli >= 4:5.0.5-18.1, php4-cli >= 3:4.4.1-6.1
 cat > $RPM_BUILD_ROOT%{_bindir}/pecl <<'EOF'
 #!/bin/sh
 %php_exec -dmemory_limit=64M -dsafe_mode=0 -dextension=xml.so %{php_pear_dir}/peclcmd.php "$@"
