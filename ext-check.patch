@@ -2,7 +2,7 @@
 +++ PEAR-1.9.4/usr/share/pear/pearcmd.php	2014-05-14 19:21:53.064418441 +0300
 @@ -45,6 +45,16 @@
  
- $pear_package_version = "1.9.4";
+ $pear_package_version = "1.10.13";
  
 +// before trying anything deep, ensure base extensions are present
 +// this avoids debugging problems with bogus error messages, which really are

@@ -11,17 +11,19 @@
 Summary:	PEAR Base System
 Summary(pl.UTF-8):	Podstawowy system PEAR
 Name:		php-pear-%{_pearname}
-Version:	1.10.9
-Release:	2
+Version:	1.10.13
+Release:	1
 Epoch:		1
 License:	New BSD License
 Group:		Development/Languages/PHP
 Source0:	https://pear.php.net/get/%{_pearname}-%{version}.tgz
-# Source0-md5:	5015d15753c5b44ac694a6906a5d8c15
-Source1:	https://pear.php.net/get/Console_Getopt-1.4.1.tgz
-# Source1-md5:	a95c86528f910562772274eefb90ca2c
+# Source0-md5:	33a22b40c30b35405f034593590d833e
+Source1:	https://pear.php.net/get/Console_Getopt-1.4.3.tgz
+# Source1-md5:	78620b71acdf113968c3482845bcbbc2
 Source2:	https://pear.php.net/get/Structures_Graph-1.1.1.tgz
 # Source2-md5:	f1be7827074c4f51eb1af245f0f7c5c4
+Source3:	http://download.pear.php.net/package/Archive_Tar-1.4.14.tgz
+# Source3-md5:	12c9b5f0e0f2e875c332cc3908659017
 Patch0:		%{name}-sysconfdir.patch
 Patch1:		ext-check.patch
 Patch2:		%{name}-FHS.patch
@@ -110,10 +112,10 @@ oraz klasy dla PHP 5:
 
 %prep
 %define __build_dir %{_builddir}/%{_pearname}-%{version}%{?_rc}
-%define	__php_include_path %{__build_dir}/%{_pearname}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz)
+%define	__php_include_path %{__build_dir}/%{_pearname}-%{version}%{?_rc}:%{__build_dir}/%(basename %{SOURCE1} .tgz):%{__build_dir}/%(basename %{SOURCE2} .tgz):%{__build_dir}/%(basename %{SOURCE3} .tgz)
 %define __pear php -dmemory_limit=-1 -doutput_buffering=1 -dinclude_path="%__php_include_path" %{__build_dir}/%{_pearname}-%{version}%{?_rc}/scripts/pearcmd.php
 
-%setup -q -c -n %{_pearname}-%{version} -a1 -a2
+%setup -q -c -n %{_pearname}-%{version} -a1 -a2 -a3
 %pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
 %patch0 -p1
