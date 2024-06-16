@@ -30,6 +30,7 @@ Patch2:		%{name}-FHS.patch
 URL:		https://pear.php.net/package/PEAR
 BuildRequires:	%{php_name}-pcre
 BuildRequires:	%{php_name}-xml
+BuildRequires:	%{php_name}-zlib
 BuildRequires:	/usr/bin/php
 BuildRequires:	rpm-php-pearprov >= 4.4.2-30.1
 BuildRequires:	rpmbuild(macros) >= 1.654
