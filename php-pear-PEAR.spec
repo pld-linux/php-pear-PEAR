@@ -119,8 +119,8 @@ oraz klasy dla PHP 5:
 %setup -q -c -n %{_pearname}-%{version} -a1 -a2 -a3
 %pear_package_setup -z -D -n %{_pearname}-%{version}%{?_rc}
 
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 %{?with_FHS:%patch2 -p1}
 
 find '(' -name '*~' -o -name '*.orig' ')' | xargs -r rm -v
